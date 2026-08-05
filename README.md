@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GILVERO — Premium Creative Media House
 
-## Getting Started
+A luxury creative media company website — photography, film, design, academy and archival print — built with Next.js.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, React Server Components, static generation)
+- **TypeScript** (strict)
+- **Tailwind CSS v4** (design tokens as CSS variables, `@theme` config in `globals.css`)
+- **Radix UI** primitives (accordion, dialog/sheet) with shadcn-style wrappers
+- **lucide-react** icons, **sonner** toasts, **class-variance-authority** for component variants
+- **next/font** (Sora display + Manrope body — self-hosted, zero layout shift)
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build (all pages statically generated)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/                    # Routes: one folder per page, metadata per page
+│   ├── layout.tsx          # Root layout: fonts, header, footer, floating actions
+│   ├── page.tsx            # Home
+│   ├── portfolio/[slug]/   # Dynamic case studies (generateStaticParams)
+│   ├── academy/[slug]/     # Dynamic course pages
+│   ├── blog/[slug]/        # Dynamic journal posts
+│   └── not-found.tsx       # 404
+├── components/
+│   ├── layout/             # Header, mega menu, mobile menu, search, footer
+│   ├── sections/<page>/    # Page-specific sections (server components by default)
+│   ├── shared/             # Section, Container, SectionHeading, Reveal, PageHeader,
+│   │                       # CtaBand, Gallery — the reusable building blocks
+│   └── ui/                 # Design-system primitives (button, input, accordion…)
+├── content/                # ALL site copy & data, typed. Edit content here —
+│                           # no JSX changes needed to update text/prices/courses.
+├── hooks/                  # use-in-view, use-scrolled, use-counter…
+└── lib/                    # site-config (contact details), images registry, utils
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing content
 
-## Learn More
+- **Company details** (phone, email, WhatsApp, address, hours): `src/lib/site-config.ts`
+- **Images**: drop files in `public/images/` and update `src/lib/images.ts`
+- **Page copy, courses, projects, posts, products**: the matching file in `src/content/`
+- **Design tokens** (colors, radius, easing, shadows): `src/app/globals.css` `:root` block
 
-To learn more about Next.js, take a look at the following resources:
+## Conventions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Server components by default; `"use client"` only on the smallest interactive island
+  (forms, filters, counters, lightboxes) with business logic in `src/hooks/`.
+- Component variants via `cva` (see `components/ui/button.tsx`).
+- Every page exports `metadata`; dynamic routes use `generateMetadata` + `generateStaticParams`.
+- Forms currently confirm via toast — wire them to an API route or server action in
+  `src/app/api/` when a backend is ready.
