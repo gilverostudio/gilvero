@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     siteName: siteConfig.name,
     type: "website",
-    title: "GILVERO — Premium Creative Media House",
+    title: "GILVERO — Capture. Create. Inspire.",
     description: "Capture. Create. Inspire. Photography, film, design, academy and print.",
   },
   twitter: {

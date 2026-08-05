@@ -15,7 +15,7 @@ import { Testimonials } from "@/components/sections/home/testimonials";
 import { CtaBand } from "@/components/shared/cta-band";
 
 export const metadata: Metadata = {
-  title: "GILVERO — Premium Creative Media House | Photography & Film",
+  title: "GILVERO — Capture. Create. Inspire. | Photography, Film & Design",
   description:
     "Gilvero is a luxury creative media company: cinematic photography, film production, brand design, a professional academy and archival fine-art printing.",
 };
