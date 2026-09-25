@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { articleBody, type ArticleBlock } from "@/content/blog";
+import { type ArticleBlock } from "@/lib/data/pages";
+import { focalStyle } from "@/lib/images";
 
 function ArticleBlockView({ block }: { block: ArticleBlock }) {
   switch (block.type) {
@@ -15,26 +17,48 @@ function ArticleBlockView({ block }: { block: ArticleBlock }) {
           {block.text}
         </blockquote>
       );
+    case "image":
+      return (
+        <figure className="py-4">
+          <Image
+            src={block.image.src}
+            alt={block.image.alt || block.caption}
+            width={block.image.width}
+            height={block.image.height}
+            sizes="(min-width: 768px) 48rem, 100vw"
+            style={focalStyle(block.image)}
+            className="w-full rounded-[1.5rem] border border-border/60 object-cover"
+          />
+          {block.caption ? (
+            <figcaption className="mt-3 text-center text-xs text-muted-foreground">{block.caption}</figcaption>
+          ) : null}
+        </figure>
+      );
     default:
       return <p>{block.text}</p>;
   }
 }
 
-/** Journal article body (shared editorial copy) with the closing link row. */
-function PostBody() {
+type PostBodyProps = {
+  body: ArticleBlock[];
+  labels: { allLabel: string; academyLabel: string };
+};
+
+/** Journal article body with the closing link row. */
+function PostBody({ body, labels }: PostBodyProps) {
   return (
     <>
       <article className="mx-auto max-w-3xl space-y-6 text-base leading-relaxed text-muted-foreground">
-        {articleBody.map((block, index) => (
+        {body.map((block, index) => (
           <ArticleBlockView key={index} block={block} />
         ))}
       </article>
       <div className="mx-auto mt-14 flex max-w-3xl flex-wrap gap-3 border-t border-border/60 pt-10">
         <Button asChild variant="quiet">
-          <Link href="/blog">All articles</Link>
+          <Link href="/blog">{labels.allLabel}</Link>
         </Button>
         <Button asChild variant="gold">
-          <Link href="/academy">Learn this at the Academy</Link>
+          <Link href="/academy">{labels.academyLabel}</Link>
         </Button>
       </div>
     </>

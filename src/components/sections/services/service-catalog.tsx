@@ -5,9 +5,12 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { serviceCategories } from "@/content/services";
+import { getServicesContent } from "@/lib/data/pages";
 
-function ServiceCatalog() {
+async function ServiceCatalog() {
+  const { categories: serviceCategories } = await getServicesContent();
+  if (!serviceCategories.length) return null;
+
   return (
     <Section>
       <Tabs defaultValue={serviceCategories[0].id}>

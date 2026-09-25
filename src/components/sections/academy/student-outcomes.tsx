@@ -2,19 +2,25 @@ import Image from "next/image";
 
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { studentOutcomes, studentOutcomesHeading } from "@/content/academy";
-import { images } from "@/lib/images";
+import { getAcademy } from "@/lib/data/pages";
+import { focalStyle } from "@/lib/images";
 
-function StudentOutcomes() {
+async function StudentOutcomes() {
+  const { outcomes } = await getAcademy();
+  const studentOutcomesHeading = outcomes;
+  const studentOutcomes = outcomes.items;
+
   return (
     <Section>
       <div className="grid items-center gap-14 lg:grid-cols-2">
         <Reveal>
           <Image
-            src={images.academy}
-            alt="Academy studio session"
-            width={1600}
-            height={1008}
+            src={outcomes.image.src}
+            alt={outcomes.image.alt}
+            width={outcomes.image.width}
+            height={outcomes.image.height}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            style={focalStyle(outcomes.image)}
             className="w-full rounded-[2rem] border border-border/60 object-cover"
           />
         </Reveal>
@@ -23,7 +29,7 @@ function StudentOutcomes() {
           <h2 className="mt-4 text-3xl sm:text-4xl">{studentOutcomesHeading.title}</h2>
           <ul className="mt-8 space-y-4">
             {studentOutcomes.map((outcome) => (
-              <li key={outcome.attribution} className="glass rounded-2xl p-6">
+              <li key={`${outcome.attribution}-${outcome.quote.slice(0, 16)}`} className="glass rounded-2xl p-6">
                 <p className="text-sm leading-relaxed text-foreground/90">
                   &ldquo;{outcome.quote}&rdquo;
                 </p>

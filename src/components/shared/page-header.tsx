@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { type ReactNode } from "react";
 
 import { Container } from "@/components/shared/container";
-import { images, type ImageKey } from "@/lib/images";
+import { focalStyle, images, type ImageKey, type SiteImage } from "@/lib/images";
 
 type Crumb = {
   label: string;
@@ -15,8 +15,8 @@ type PageHeaderProps = {
   eyebrow: string;
   title: ReactNode;
   copy?: ReactNode;
-  /** Background image key from the shared image registry. */
-  image?: ImageKey;
+  /** Background image: a registry key or a CMS image. */
+  image?: ImageKey | SiteImage;
   /** Breadcrumb trail after "Home". */
   crumbs?: Crumb[];
   actions?: ReactNode;
@@ -35,10 +35,11 @@ function PageHeader({
     <header className="relative overflow-hidden pt-[72px]">
       <div className="absolute inset-0">
         <Image
-          src={images[image]}
+          src={typeof image === "string" ? images[image] : image.src}
           alt=""
           fill
           sizes="100vw"
+          style={typeof image === "string" ? undefined : focalStyle(image)}
           className="object-cover opacity-30"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/85 to-background" />

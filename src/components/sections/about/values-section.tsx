@@ -1,16 +1,19 @@
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { coreValues } from "@/content/about";
+import { getAbout } from "@/lib/data/pages";
 
 /** The four non-negotiable studio values on a charcoal band. */
-function ValuesSection() {
+async function ValuesSection() {
+  const { values } = await getAbout();
+  const coreValues = values.items;
+
   return (
     <Section className="border-y border-border/60 bg-charcoal">
-      <SectionHeading eyebrow="Core values" title="Four things we don't negotiate" />
+      <SectionHeading eyebrow={values.heading.eyebrow} title={values.heading.title} />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {coreValues.map((value, index) => (
-          <Reveal key={value.title} delay={index * 80}>
+          <Reveal key={`${value.title}-${index}`} delay={index * 80}>
             <div className="h-full rounded-[1.5rem] border border-border/60 bg-background/40 p-7">
               <p className="font-display text-xl text-primary">0{index + 1}</p>
               <h3 className="mt-4 text-lg">{value.title}</h3>

@@ -1,15 +1,17 @@
 import { Gallery } from "@/components/shared/gallery";
-import { toGalleryImages } from "@/components/shared/gallery-items";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { studioTour } from "@/content/about";
+import { getAbout } from "@/lib/data/pages";
 
 /** Lightbox tour of the Creative House spaces. */
-function StudioTourSection() {
+async function StudioTourSection() {
+  const { studioTour } = await getAbout();
+  if (!studioTour.items.length) return null;
+
   return (
     <Section>
-      <SectionHeading eyebrow="Studio tour" title="Where the work happens" />
-      <Gallery items={toGalleryImages(studioTour)} />
+      <SectionHeading eyebrow={studioTour.heading.eyebrow} title={studioTour.heading.title} />
+      <Gallery items={studioTour.items} />
     </Section>
   );
 }

@@ -6,9 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { faqGroups } from "@/content/faq";
+import { getFaq } from "@/lib/data/pages";
 
-function FaqList() {
+async function FaqList() {
+  const { groups: faqGroups } = await getFaq();
+
   return (
     <Section>
       <div className="mx-auto max-w-3xl space-y-14">

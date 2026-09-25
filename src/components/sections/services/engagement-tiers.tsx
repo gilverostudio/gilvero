@@ -5,19 +5,22 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
-import { engagementTiers } from "@/content/services";
+import { getServicesContent } from "@/lib/data/pages";
 
-function EngagementTiers() {
+async function EngagementTiers() {
+  const { tiers: engagementTiers, tiersHeading } = await getServicesContent();
+  if (!engagementTiers.length) return null;
+
   return (
     <Section className="border-y border-border/60 bg-charcoal">
       <SectionHeading
-        eyebrow="Engagement"
-        title="Three ways to work with us"
-        copy="Indicative structures only — every project is quoted on scope, crew and delivery."
+        eyebrow={tiersHeading.eyebrow}
+        title={tiersHeading.title}
+        copy={tiersHeading.copy}
       />
       <div className="grid gap-5 lg:grid-cols-3">
         {engagementTiers.map((tier, index) => (
-          <Reveal key={tier.name} delay={index * 90}>
+          <Reveal key={`${tier.name}-${index}`} delay={index * 90}>
             <div
               className={`flex h-full flex-col rounded-[1.75rem] border p-8 ${
                 tier.featured
@@ -27,7 +30,7 @@ function EngagementTiers() {
             >
               {tier.featured ? (
                 <span className="mb-4 w-fit rounded-full bg-primary px-3 py-1 text-[0.65rem] tracking-[0.2em] text-primary-foreground uppercase">
-                  Most chosen
+                  {tiersHeading.featuredLabel}
                 </span>
               ) : null}
               <h3 className="text-2xl">{tier.name}</h3>
@@ -46,7 +49,7 @@ function EngagementTiers() {
                 size="lg"
                 className="mt-8"
               >
-                <Link href="/booking">Get a Quote</Link>
+                <Link href="/booking">{tiersHeading.actionLabel}</Link>
               </Button>
             </div>
           </Reveal>

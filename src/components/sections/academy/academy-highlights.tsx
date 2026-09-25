@@ -2,7 +2,8 @@ import { Award, Clock, Users, type LucideIcon } from "lucide-react";
 
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { academyHighlights, type AcademyHighlight } from "@/content/academy";
+import { type AcademyHighlight } from "@/content/academy";
+import { getAcademy } from "@/lib/data/pages";
 
 const highlightIcons: Record<AcademyHighlight["icon"], LucideIcon> = {
   users: Users,
@@ -10,12 +11,15 @@ const highlightIcons: Record<AcademyHighlight["icon"], LucideIcon> = {
   clock: Clock,
 };
 
-function AcademyHighlights() {
+async function AcademyHighlights() {
+  const { highlights: academyHighlights } = await getAcademy();
+  if (!academyHighlights.length) return null;
+
   return (
     <Section>
       <div className="grid gap-5 sm:grid-cols-3">
         {academyHighlights.map((highlight, index) => {
-          const Icon = highlightIcons[highlight.icon];
+          const Icon = highlightIcons[highlight.icon] ?? Award;
           return (
             <Reveal key={highlight.title} delay={index * 80}>
               <div className="glass h-full rounded-[1.5rem] p-8">

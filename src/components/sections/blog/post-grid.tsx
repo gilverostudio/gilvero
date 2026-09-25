@@ -6,20 +6,22 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 import { Reveal } from "@/components/shared/reveal";
-import { blogCategories, posts, type BlogCategoryFilter } from "@/content/blog";
-import { images } from "@/lib/images";
+import { type JournalPost } from "@/lib/data/pages";
+import { focalStyle } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 /** Category filter chips plus the filtered journal card grid. */
-function PostGrid() {
-  const [activeCategory, setActiveCategory] = useState<BlogCategoryFilter>("All");
+type PostCard = Pick<JournalPost, "slug" | "title" | "category" | "date" | "read" | "excerpt" | "cover">;
+
+function PostGrid({ categories, posts }: { categories: string[]; posts: PostCard[] }) {
+  const [activeCategory, setActiveCategory] = useState("All");
   const visiblePosts =
     activeCategory === "All" ? posts : posts.filter((post) => post.category === activeCategory);
 
   return (
     <>
       <div className="mb-12 flex flex-wrap gap-2">
-        {blogCategories.map((category) => (
+        {["All", ...categories].map((category) => (
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
@@ -42,10 +44,12 @@ function PostGrid() {
               className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/40"
             >
               <Image
-                src={images.academy}
-                alt={post.title}
-                width={1600}
-                height={1008}
+                src={post.cover.src}
+                alt={post.cover.alt}
+                width={post.cover.width}
+                height={post.cover.height}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                style={focalStyle(post.cover)}
                 className="aspect-[16/10] w-full object-cover opacity-70 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
               />
               <div className="flex flex-1 flex-col p-7">

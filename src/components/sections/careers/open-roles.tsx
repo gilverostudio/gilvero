@@ -3,9 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { applyEmail, careersIntro, openRoles } from "@/content/careers";
+import { getCareers } from "@/lib/data/pages";
 
-function OpenRoles() {
+async function OpenRoles() {
+  const { intro: careersIntro, roles: openRoles, applyEmail } = await getCareers();
+
   return (
     <Section>
       <SectionHeading
@@ -15,7 +17,7 @@ function OpenRoles() {
       />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {openRoles.map((role, index) => (
-          <Reveal key={role.title} delay={index * 70}>
+          <Reveal key={`${role.title}-${index}`} delay={index * 70}>
             <div className="flex h-full flex-col rounded-[1.5rem] border border-border/60 bg-card/40 p-7">
               <p className="text-xs tracking-[0.16em] text-primary uppercase">{role.team}</p>
               <h3 className="mt-3 text-lg">{role.title}</h3>
@@ -28,7 +30,7 @@ function OpenRoles() {
                   href={`mailto:${applyEmail}?subject=${encodeURIComponent(`Application — ${role.title}`)}`}
                   className="group inline-flex items-center gap-2 text-sm font-medium text-foreground/85 transition-colors hover:text-primary"
                 >
-                  Apply for this role
+                  {careersIntro.applyLabel}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>

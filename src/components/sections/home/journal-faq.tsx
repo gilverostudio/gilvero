@@ -10,10 +10,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { faqPreview, journalPreview } from "@/content/home";
 import { type HomeContent } from "@/lib/data/home";
+import { getFaq, getJournal } from "@/lib/data/pages";
 
-export function JournalFaq({ copy }: { copy: HomeContent["journalFaq"] }) {
+export async function JournalFaq({ copy }: { copy: HomeContent["journalFaq"] }) {
+  const [{ posts }, { home: faqPreview }] = await Promise.all([getJournal(), getFaq()]);
+  const journalPreview = posts.filter((post) => post.featured);
+
   return (
     <Section className="border-t border-border/60 bg-charcoal">
       <div className="grid gap-16 lg:grid-cols-2">

@@ -3,13 +3,14 @@ import { Check } from "lucide-react";
 import { ApplyForm } from "@/components/sections/academy/apply-form";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { certificationCopy, studentProjectsCopy, type Course } from "@/content/academy";
+import { type AcademyContent, type Course } from "@/lib/data/pages";
 
 type CourseDetailProps = {
   course: Course;
+  detail: AcademyContent["detail"];
 };
 
-function CourseDetail({ course }: CourseDetailProps) {
+function CourseDetail({ course, detail }: CourseDetailProps) {
   const facts = [
     { label: "Duration", value: course.duration },
     { label: "Batch", value: course.batch },
@@ -31,10 +32,10 @@ function CourseDetail({ course }: CourseDetailProps) {
               </div>
             ))}
           </div>
-          <h2 className="mt-12 text-2xl sm:text-3xl">Curriculum</h2>
+          <h2 className="mt-12 text-2xl sm:text-3xl">{detail.curriculum}</h2>
           <ul className="mt-8 grid gap-3 sm:grid-cols-2">
             {course.curriculum.map((module, index) => (
-              <Reveal key={module} as="li" delay={index * 40}>
+              <Reveal key={`${module}-${index}`} as="li" delay={index * 40}>
                 <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-card/40 px-5 py-4 text-sm text-foreground/85">
                   <span className="font-display text-xs text-primary">
                     {String(index + 1).padStart(2, "0")}
@@ -44,8 +45,8 @@ function CourseDetail({ course }: CourseDetailProps) {
               </Reveal>
             ))}
           </ul>
-          <h2 className="mt-14 text-2xl sm:text-3xl">Certification &amp; careers</h2>
-          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{certificationCopy}</p>
+          <h2 className="mt-14 text-2xl sm:text-3xl">{detail.certification}</h2>
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{detail.certificationCopy}</p>
           <div className="mt-6 flex flex-wrap gap-2">
             {course.careers.map((career) => (
               <span
@@ -56,9 +57,9 @@ function CourseDetail({ course }: CourseDetailProps) {
               </span>
             ))}
           </div>
-          <h2 className="mt-14 text-2xl sm:text-3xl">Student projects</h2>
+          <h2 className="mt-14 text-2xl sm:text-3xl">{detail.studentProjects}</h2>
           <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-            {studentProjectsCopy}
+            {detail.studentProjectsCopy}
           </p>
         </div>
         <aside className="lg:sticky lg:top-28 lg:self-start">

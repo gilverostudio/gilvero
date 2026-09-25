@@ -4,9 +4,11 @@ import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { courses, coursesHeading } from "@/content/academy";
+import { getAcademy } from "@/lib/data/pages";
 
-function CourseGrid() {
+async function CourseGrid() {
+  const { courses, coursesHeading } = await getAcademy();
+
   return (
     <Section className="border-y border-border/60 bg-charcoal">
       <SectionHeading

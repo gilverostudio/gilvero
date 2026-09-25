@@ -4,6 +4,7 @@ import { PostGrid } from "@/components/sections/blog/post-grid";
 import { CtaBand } from "@/components/shared/cta-band";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
+import { getJournal } from "@/lib/data/pages";
 
 export const metadata: Metadata = {
   title: "Journal — Photography, Editing & Creative Business | Gilvero",
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
     "Photography tips, camera reviews, editing technique, pricing and creative business writing from the Gilvero studio.",
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const { categories, posts } = await getJournal();
+
   return (
     <>
       <PageHeader
@@ -22,7 +25,18 @@ export default function BlogPage() {
         crumbs={[{ label: "Journal" }]}
       />
       <Section>
-        <PostGrid />
+        <PostGrid
+          categories={categories}
+          posts={posts.map(({ slug, title, category, date, read, excerpt, cover }) => ({
+            slug,
+            title,
+            category,
+            date,
+            read,
+            excerpt,
+            cover,
+          }))}
+        />
       </Section>
       <CtaBand
         title="Want this in your inbox?"

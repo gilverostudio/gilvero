@@ -2,20 +2,24 @@ import Image from "next/image";
 
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { founder } from "@/content/about";
-import { images } from "@/lib/images";
+import { getAbout } from "@/lib/data/pages";
+import { focalStyle } from "@/lib/images";
 
 /** Founder portrait and short profile. */
-function FounderSection() {
+async function FounderSection() {
+  const { founder } = await getAbout();
+
   return (
     <Section>
       <div className="grid gap-14 lg:grid-cols-[1fr_1.2fr]">
         <Reveal>
           <Image
-            src={images.fashion}
-            alt={founder.imageAlt}
-            width={1200}
-            height={1504}
+            src={founder.image.src}
+            alt={founder.image.alt}
+            width={founder.image.width}
+            height={founder.image.height}
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            style={focalStyle(founder.image)}
             className="w-full rounded-[2rem] border border-border/60 object-cover"
           />
         </Reveal>
