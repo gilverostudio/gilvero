@@ -6,10 +6,14 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
-import { featuredWorkSection, homeImageDimensions } from "@/content/home";
-import { images } from "@/lib/images";
+import { featuredWorkSection } from "@/content/home";
+import { getFeaturedProjects } from "@/lib/data/portfolio";
+import { focalStyle } from "@/lib/images";
 
-export function FeaturedWork() {
+export async function FeaturedWork() {
+  const works = await getFeaturedProjects();
+  if (!works.length) return null;
+
   return (
     <Section className="border-t border-border/60 bg-charcoal">
       <SectionHeading
@@ -25,7 +29,7 @@ export function FeaturedWork() {
         }
       />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {featuredWorkSection.works.map((work, index) => (
+        {works.map((work, index) => (
           <Reveal key={work.slug} delay={index * 70}>
             <Link
               href={`/portfolio/${work.slug}`}
@@ -33,10 +37,12 @@ export function FeaturedWork() {
             >
               <div className="overflow-hidden">
                 <Image
-                  src={images[work.image]}
-                  alt={work.title}
-                  width={homeImageDimensions[work.image].width}
-                  height={homeImageDimensions[work.image].height}
+                  src={work.image.src}
+                  alt={work.image.alt}
+                  width={work.image.width}
+                  height={work.image.height}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  style={focalStyle(work.image)}
                   loading="lazy"
                   className="aspect-[4/5] size-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
                 />

@@ -3,18 +3,19 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
-import { type Project } from "@/content/portfolio";
-import { images } from "@/lib/images";
+import { type PortfolioProject } from "@/lib/data/portfolio";
+import { focalStyle } from "@/lib/images";
 
-function CaseStudyHero({ project }: { project: Project }) {
+function CaseStudyHero({ project }: { project: PortfolioProject }) {
   return (
     <header className="relative min-h-[70svh] overflow-hidden pt-[72px]">
       <Image
-        src={images[project.image]}
-        alt={project.title}
+        src={project.image.src}
+        alt={project.image.alt}
         fill
         sizes="100vw"
-        priority
+        preload
+        style={focalStyle(project.image)}
         className="absolute inset-0 size-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />

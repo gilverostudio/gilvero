@@ -1,8 +1,8 @@
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { type Project } from "@/content/portfolio";
+import { type PortfolioProject } from "@/lib/data/portfolio";
 
-function CaseStudyOverview({ project }: { project: Project }) {
+function CaseStudyOverview({ project }: { project: PortfolioProject }) {
   const facts = [
     { label: "Client", value: project.client },
     { label: "Location", value: project.location },

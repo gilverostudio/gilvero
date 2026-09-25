@@ -6,11 +6,18 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 import { Reveal } from "@/components/shared/reveal";
-import { portfolioCategories, projects } from "@/content/portfolio";
-import { images } from "@/lib/images";
+import { type PortfolioProject } from "@/lib/data/portfolio";
+import { focalStyle } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
-function ProjectGrid() {
+type ProjectCard = Pick<PortfolioProject, "slug" | "title" | "category" | "client" | "year" | "image">;
+
+type ProjectGridProps = {
+  categories: string[];
+  projects: ProjectCard[];
+};
+
+function ProjectGrid({ categories, projects }: ProjectGridProps) {
   const [category, setCategory] = useState("All");
   const visibleProjects =
     category === "All" ? projects : projects.filter((project) => project.category === category);
@@ -18,7 +25,7 @@ function ProjectGrid() {
   return (
     <>
       <div className="mb-12 flex flex-wrap gap-2">
-        {portfolioCategories.map((label) => (
+        {["All", ...categories].map((label) => (
           <button
             key={label}
             onClick={() => setCategory(label)}
@@ -46,10 +53,12 @@ function ProjectGrid() {
                 className="group block overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/40"
               >
                 <Image
-                  src={images[project.image]}
-                  alt={project.title}
-                  width={1200}
-                  height={1500}
+                  src={project.image.src}
+                  alt={project.image.alt}
+                  width={project.image.width}
+                  height={project.image.height}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  style={focalStyle(project.image)}
                   className="aspect-[4/5] w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
                 />
                 <div className="flex items-end justify-between gap-4 p-6">

@@ -4,16 +4,14 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { images, type ImageKey } from "@/lib/images";
+import { type GalleryImage } from "@/components/shared/gallery-items";
+import { focalStyle } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
-export type GalleryItem = {
-  key: ImageKey;
-  caption: string;
-};
+export type { GalleryImage, GalleryItem } from "@/components/shared/gallery-items";
 
 type GalleryProps = {
-  items: GalleryItem[];
+  items: GalleryImage[];
   className?: string;
 };
 
@@ -26,7 +24,7 @@ function Gallery({ items, className }: GalleryProps) {
       <div className={cn("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", className)}>
         {items.map((item, index) => (
           <button
-            key={`${item.key}-${index}`}
+            key={`${item.image.src}-${index}`}
             onClick={() => setActive(index)}
             className={cn(
               "group relative cursor-pointer overflow-hidden rounded-3xl border border-border/60",
@@ -34,10 +32,12 @@ function Gallery({ items, className }: GalleryProps) {
             )}
           >
             <Image
-              src={images[item.key]}
-              alt={item.caption}
-              width={1200}
-              height={1500}
+              src={item.image.src}
+              alt={item.image.alt || item.caption}
+              width={item.image.width}
+              height={item.image.height}
+              sizes="(min-width: 1024px) 66vw, (min-width: 640px) 50vw, 100vw"
+              style={focalStyle(item.image)}
               className="aspect-[4/5] size-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-70 transition-opacity group-hover:opacity-95" />
@@ -53,10 +53,11 @@ function Gallery({ items, className }: GalleryProps) {
           <DialogTitle className="sr-only">Gallery image</DialogTitle>
           {active === null ? null : (
             <Image
-              src={images[items[active].key]}
-              alt={items[active].caption}
-              width={1920}
-              height={1200}
+              src={items[active].image.src}
+              alt={items[active].image.alt || items[active].caption}
+              width={items[active].image.width}
+              height={items[active].image.height}
+              sizes="(min-width: 1024px) 64rem, 100vw"
               className="max-h-[80vh] w-full rounded-2xl object-contain"
             />
           )}

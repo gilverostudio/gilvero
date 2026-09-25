@@ -1,4 +1,4 @@
-import { type ImageKey } from "@/lib/images";
+import { imageDimensions, type ImageKey } from "@/lib/images";
 
 export type HomeHero = {
   eyebrow: string;
@@ -68,16 +68,7 @@ export type FaqItem = {
 };
 
 /** Intrinsic dimensions of the source JPGs (for next/image). */
-export const homeImageDimensions: Record<ImageKey, { width: number; height: number }> = {
-  hero: { width: 1920, height: 1088 },
-  wedding: { width: 1200, height: 1504 },
-  product: { width: 1200, height: 1504 },
-  architecture: { width: 1200, height: 1504 },
-  fashion: { width: 1200, height: 1504 },
-  academy: { width: 1600, height: 1008 },
-  store: { width: 1600, height: 1008 },
-  studio: { width: 1600, height: 1200 },
-};
+export const homeImageDimensions = imageDimensions;
 
 export const homeHero: HomeHero = {
   eyebrow: "Creative Media House · Est. 2016",

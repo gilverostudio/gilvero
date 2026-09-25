@@ -1,4 +1,5 @@
 import { Gallery } from "@/components/shared/gallery";
+import { toGalleryImages } from "@/components/shared/gallery-items";
 import { Section } from "@/components/shared/section";
 import { studioGallery, studioGalleryTitle } from "@/content/contact";
 
@@ -7,7 +8,7 @@ function StudioGallerySection() {
   return (
     <Section className="border-y border-border/60 bg-charcoal">
       <h2 className="mb-10 text-3xl sm:text-4xl">{studioGalleryTitle}</h2>
-      <Gallery items={studioGallery} />
+      <Gallery items={toGalleryImages(studioGallery)} />
     </Section>
   );
 }
