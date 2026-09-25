@@ -8,10 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { contactForm } from "@/content/contact";
-import { siteConfig } from "@/lib/site-config";
 
 /** Enquiry form — client-side confirmation only, no backend. */
-function ContactForm() {
+function ContactForm({ whatsapp }: { whatsapp: string }) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     toast.success(contactForm.toastMessage);
@@ -52,7 +51,7 @@ function ContactForm() {
           {contactForm.submitLabel}
         </Button>
         <Button asChild variant="quiet" size="lg">
-          <a href={siteConfig.whatsapp} target="_blank" rel="noreferrer">
+          <a href={whatsapp} target="_blank" rel="noreferrer">
             {contactForm.whatsappLabel}
           </a>
         </Button>

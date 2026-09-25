@@ -8,12 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 /** Footer newsletter signup. Wire `subscribe` to a real API when available. */
-function NewsletterForm() {
+function NewsletterForm({ placeholder, toastMessage }: { placeholder: string; toastMessage: string }) {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    toast.success("Subscribed — welcome to the Gilvero journal.");
+    toast.success(toastMessage);
     setEmail("");
   };
 
@@ -22,7 +22,7 @@ function NewsletterForm() {
       <Input
         type="email"
         required
-        placeholder="Email address"
+        placeholder={placeholder}
         value={email}
         onChange={(event) => setEmail(event.target.value)}
       />

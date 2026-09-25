@@ -3,20 +3,21 @@ import Image from "next/image";
 
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { awards, btsImages, homeImageDimensions } from "@/content/home";
-import { images } from "@/lib/images";
+import { type HomeContent } from "@/lib/data/home";
+import { focalStyle } from "@/lib/images";
 
 /** Awards list alongside the behind-the-scenes studio grid. */
-export function Recognition() {
+export function Recognition({ recognition }: { recognition: HomeContent["recognition"] }) {
+  const { awards } = recognition;
   return (
     <Section className="border-y border-border/60 bg-charcoal">
       <div className="grid gap-14 lg:grid-cols-2">
         <div>
-          <p className="eyebrow">Recognition</p>
-          <h2 className="mt-4 text-3xl sm:text-4xl">Awards & features</h2>
+          <p className="eyebrow">{recognition.awardsEyebrow}</p>
+          <h2 className="mt-4 text-3xl sm:text-4xl">{recognition.awardsTitle}</h2>
           <ul className="mt-9">
             {awards.map((award, index) => (
-              <Reveal key={award.name} as="li" delay={index * 70}>
+              <Reveal key={`${award.year}-${award.name}`} as="li" delay={index * 70}>
                 <div className="flex items-baseline gap-6 border-b border-border/50 py-5">
                   <span className="font-display text-sm text-primary">{award.year}</span>
                   <div>
@@ -30,16 +31,18 @@ export function Recognition() {
           </ul>
         </div>
         <div>
-          <p className="eyebrow">Behind the scenes</p>
-          <h2 className="mt-4 text-3xl sm:text-4xl">Inside the studio</h2>
+          <p className="eyebrow">{recognition.btsEyebrow}</p>
+          <h2 className="mt-4 text-3xl sm:text-4xl">{recognition.btsTitle}</h2>
           <div className="mt-9 grid grid-cols-2 gap-4">
-            {btsImages.map((key, index) => (
-              <Reveal key={key} delay={index * 70}>
+            {recognition.bts.map((image, index) => (
+              <Reveal key={`${image.src}-${index}`} delay={index * 70}>
                 <Image
-                  src={images[key]}
-                  alt="Behind the scenes at Gilvero"
-                  width={homeImageDimensions[key].width}
-                  height={homeImageDimensions[key].height}
+                  src={image.src}
+                  alt={image.alt}
+                  width={image.width}
+                  height={image.height}
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  style={focalStyle(image)}
                   loading="lazy"
                   className="aspect-square w-full rounded-2xl border border-border/60 object-cover opacity-80 transition-opacity hover:opacity-100"
                 />

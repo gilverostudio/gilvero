@@ -1,8 +1,8 @@
 import { bookingAside, bookingSteps } from "@/content/booking";
-import { siteConfig } from "@/lib/site-config";
+import type { SiteSettings } from "@/lib/data/site";
 
 /** Sticky "what happens next" panel beside the booking form. */
-function BookingAside() {
+function BookingAside({ settings: siteConfig }: { settings: Pick<SiteSettings, "phone" | "hours"> }) {
   return (
     <aside className="glass sticky top-28 rounded-[1.75rem] p-8">
       <p className="eyebrow">{bookingAside.eyebrow}</p>

@@ -6,10 +6,10 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
-import { storePreview } from "@/content/home";
-import { images } from "@/lib/images";
+import { type HomeContent } from "@/lib/data/home";
+import { focalStyle } from "@/lib/images";
 
-export function StorePreview() {
+export function StorePreview({ store: storePreview }: { store: HomeContent["store"] }) {
   return (
     <Section>
       <SectionHeading
@@ -19,17 +19,19 @@ export function StorePreview() {
         action={
           <Button asChild variant="quiet" size="lg">
             <Link href="/store">
-              Shop Prints <ArrowRight aria-hidden />
+              {storePreview.linkLabel} <ArrowRight aria-hidden />
             </Link>
           </Button>
         }
       />
       <Reveal className="overflow-hidden rounded-[2rem] border border-border/60">
         <Image
-          src={images.store}
-          alt={storePreview.imageAlt}
-          width={1600}
-          height={1008}
+          src={storePreview.image.src}
+          alt={storePreview.image.alt}
+          width={storePreview.image.width}
+          height={storePreview.image.height}
+          sizes="(min-width: 1320px) 1320px, 100vw"
+          style={focalStyle(storePreview.image)}
           loading="lazy"
           className="size-full object-cover"
         />

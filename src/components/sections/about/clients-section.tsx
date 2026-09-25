@@ -1,9 +1,12 @@
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { clients } from "@/content/about";
+import { getClientsAndAwards } from "@/lib/data/home";
 
 /** Wordmark strip of selected clients. */
-function ClientsSection() {
+async function ClientsSection() {
+  const { clients } = await getClientsAndAwards();
+  if (!clients.length) return null;
+
   return (
     <Section>
       <SectionHeading eyebrow="Clients" title="Selected client list" align="center" />

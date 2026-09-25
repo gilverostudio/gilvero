@@ -1,9 +1,12 @@
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
-import { awards, equipment, timeline } from "@/content/about";
+import { equipment, timeline } from "@/content/about";
+import { getClientsAndAwards } from "@/lib/data/home";
 
 /** Ten-year timeline beside the owned equipment list and awards. */
-function TimelineSection() {
+async function TimelineSection() {
+  const { awards } = await getClientsAndAwards();
+
   return (
     <Section className="border-y border-border/60 bg-charcoal">
       <div className="grid gap-14 lg:grid-cols-2">
@@ -34,7 +37,7 @@ function TimelineSection() {
           <p className="eyebrow mt-12">Achievements</p>
           <ul className="mt-6 space-y-3">
             {awards.map((award) => (
-              <li key={award.name} className="text-sm text-muted-foreground">
+              <li key={`${award.year}-${award.name}`} className="text-sm text-muted-foreground">
                 <span className="text-primary">{award.year}</span>
                 {" — "}
                 {award.name}

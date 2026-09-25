@@ -3,11 +3,12 @@
 import { ArrowUp, MessageCircle, Phone } from "lucide-react";
 
 import { useScrolled } from "@/hooks/use-scrolled";
-import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 /** Floating back-to-top, call and WhatsApp actions pinned to the corner. */
-function FloatingActions() {
+type FloatingActionsProps = { phone: string; whatsapp: string; whatsappLabel: string };
+
+function FloatingActions({ phone, whatsapp, whatsappLabel }: FloatingActionsProps) {
   const showTop = useScrolled(600);
 
   return (
@@ -24,19 +25,19 @@ function FloatingActions() {
       </button>
       <a
         aria-label="Call the studio"
-        href={`tel:${siteConfig.phone}`}
+        href={`tel:${phone}`}
         className="glass grid size-11 place-items-center rounded-full text-foreground/80 transition-colors hover:text-primary"
       >
         <Phone className="size-4" />
       </a>
       <a
-        href={siteConfig.whatsapp}
+        href={whatsapp}
         target="_blank"
         rel="noreferrer"
         className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-[oklch(0.78_0.12_84)] to-[oklch(0.88_0.1_92)] px-4 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] transition-transform hover:-translate-y-0.5"
       >
         <MessageCircle className="size-4" />
-        <span className="hidden sm:inline">WhatsApp</span>
+        <span className="hidden sm:inline">{whatsappLabel}</span>
       </a>
     </div>
   );

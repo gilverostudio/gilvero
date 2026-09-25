@@ -6,11 +6,11 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
-import { featuredWorkSection } from "@/content/home";
+import { type HomeContent } from "@/lib/data/home";
 import { getFeaturedProjects } from "@/lib/data/portfolio";
 import { focalStyle } from "@/lib/images";
 
-export async function FeaturedWork() {
+export async function FeaturedWork({ section: featuredWorkSection }: { section: HomeContent["featured"] }) {
   const works = await getFeaturedProjects();
   if (!works.length) return null;
 
@@ -23,7 +23,7 @@ export async function FeaturedWork() {
         action={
           <Button asChild variant="quiet" size="lg">
             <Link href="/portfolio">
-              Full Portfolio <ArrowRight aria-hidden />
+              {featuredWorkSection.linkLabel} <ArrowRight aria-hidden />
             </Link>
           </Button>
         }

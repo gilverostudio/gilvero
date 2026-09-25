@@ -13,6 +13,8 @@ import { StatsBand } from "@/components/sections/home/stats";
 import { StorePreview } from "@/components/sections/home/store-preview";
 import { Testimonials } from "@/components/sections/home/testimonials";
 import { CtaBand } from "@/components/shared/cta-band";
+import { getHomeContent } from "@/lib/data/home";
+import { getPageCta } from "@/lib/data/site";
 
 export const metadata: Metadata = {
   title: "GILVERO — Capture. Create. Inspire. | Photography, Film & Design",
@@ -20,22 +22,24 @@ export const metadata: Metadata = {
     "Gilvero is a luxury creative media company: cinematic photography, film production, brand design, a professional academy and archival fine-art printing.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [content, cta] = await Promise.all([getHomeContent(), getPageCta("home")]);
+
   return (
     <>
-      <Hero />
-      <BrandMarquee />
-      <ServicesOverview />
-      <FeaturedWork />
-      <LatestFilms />
-      <AcademyPreview />
-      <StorePreview />
-      <StatsBand />
-      <Testimonials />
-      <Recognition />
-      <InstagramFeed />
-      <JournalFaq />
-      <CtaBand />
+      <Hero hero={content.hero} />
+      <BrandMarquee brands={content.brands} />
+      <ServicesOverview services={content.services} />
+      <FeaturedWork section={content.featured} />
+      <LatestFilms films={content.films} />
+      <AcademyPreview academy={content.academy} />
+      <StorePreview store={content.store} />
+      <StatsBand stats={content.stats} />
+      <Testimonials testimonials={content.testimonials} />
+      <Recognition recognition={content.recognition} />
+      <InstagramFeed instagram={content.instagram} />
+      <JournalFaq copy={content.journalFaq} />
+      {cta === null ? null : <CtaBand {...(cta ?? {})} />}
     </>
   );
 }

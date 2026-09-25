@@ -11,7 +11,10 @@ import "server-only";
 
 /** Cache tags. Keep in sync with the admin's `revalidateWebsite()` calls. */
 export const CMS_TAGS = {
+  /** Projects, portfolio categories, galleries. */
   portfolio: "portfolio",
+  /** Settings, menus, section copy, homepage collections, media. */
+  site: "site",
 } as const;
 
 /** Safety net if an on-demand refresh is ever missed. */

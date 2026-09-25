@@ -4,20 +4,22 @@ import Link from "next/link";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { Button } from "@/components/ui/button";
-import { academyPreview } from "@/content/home";
-import { images } from "@/lib/images";
+import { type HomeContent } from "@/lib/data/home";
+import { focalStyle } from "@/lib/images";
 
-export function AcademyPreview() {
+export function AcademyPreview({ academy: academyPreview }: { academy: HomeContent["academy"] }) {
   return (
     <Section className="border-y border-border/60 bg-charcoal">
       <div className="grid items-center gap-14 lg:grid-cols-2">
         <Reveal>
           <div className="overflow-hidden rounded-[2rem] border border-border/60">
             <Image
-              src={images.academy}
-              alt={academyPreview.imageAlt}
-              width={1600}
-              height={1008}
+              src={academyPreview.image.src}
+              alt={academyPreview.image.alt}
+              width={academyPreview.image.width}
+              height={academyPreview.image.height}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              style={focalStyle(academyPreview.image)}
               loading="lazy"
               className="size-full object-cover"
             />
@@ -31,7 +33,7 @@ export function AcademyPreview() {
           </p>
           <ul className="mt-8 space-y-4">
             {academyPreview.quotes.map((item) => (
-              <li key={item.attribution} className="glass rounded-2xl p-6">
+              <li key={`${item.attribution}-${item.quote.slice(0, 20)}`} className="glass rounded-2xl p-6">
                 <p className="text-sm leading-relaxed text-foreground/90">“{item.quote}”</p>
                 <p className="mt-3 text-xs tracking-[0.16em] text-primary uppercase">
                   {item.attribution}
@@ -41,10 +43,10 @@ export function AcademyPreview() {
           </ul>
           <div className="mt-9 flex flex-wrap gap-3">
             <Button asChild variant="gold" size="lg">
-              <Link href="/academy">Enroll Now</Link>
+              <Link href={academyPreview.primary.href}>{academyPreview.primary.label}</Link>
             </Button>
             <Button asChild variant="quiet" size="lg">
-              <Link href="/academy">View Courses</Link>
+              <Link href={academyPreview.secondary.href}>{academyPreview.secondary.label}</Link>
             </Button>
           </div>
         </Reveal>

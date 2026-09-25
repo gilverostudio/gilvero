@@ -9,14 +9,23 @@ import { MegaMenu } from "@/components/layout/mega-menu";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { SearchDialog } from "@/components/layout/search-dialog";
 import { Button } from "@/components/ui/button";
-import { mainNav } from "@/content/navigation";
+import { type NavLink } from "@/content/navigation";
 import { useScrolled } from "@/hooks/use-scrolled";
+import type { ChromeCopy, Navigation } from "@/lib/data/site";
 import { cn } from "@/lib/utils";
 
-/** Nav items that expand the mega menu on hover. */
-const MEGA_MENU_ITEMS = new Set(["Services"]);
+type HeaderProps = {
+  siteName: string;
+  nav: Pick<Navigation, "main" | "mega" | "search" | "mobile">;
+  chrome: Pick<ChromeCopy, "bookLabel" | "bookHref" | "search">;
+};
 
-function Header() {
+/** The nav item that expands the mega menu on hover: the one linking where the mega menu's CTA goes. */
+function opensMegaMenu(item: NavLink, nav: HeaderProps["nav"]) {
+  return item.href === nav.mega.intro.cta.href;
+}
+
+function Header({ siteName, nav, chrome }: HeaderProps) {
   const scrolled = useScrolled(24);
   const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -44,16 +53,16 @@ function Header() {
       <div className="mx-auto flex h-[72px] w-full max-w-[1320px] items-center gap-4 px-5 sm:px-8">
         <Link href="/" className="group flex items-center gap-3">
           <span className="font-display text-lg tracking-[0.42em] text-foreground transition-colors group-hover:text-primary">
-            GILVERO
+            {siteName}
           </span>
         </Link>
 
         <nav className="ml-auto hidden items-center gap-1 lg:flex">
-          {mainNav.map((item) => (
+          {nav.main.map((item) => (
             <div
               key={item.label}
               onMouseEnter={() =>
-                setOpenMenu(MEGA_MENU_ITEMS.has(item.label) ? item.label : null)
+                setOpenMenu(opensMegaMenu(item, nav) ? "mega" : null)
               }
             >
               <Link
@@ -80,9 +89,16 @@ function Header() {
             <Search />
           </Button>
           <Button asChild variant="gold" size="sm" className="hidden sm:inline-flex">
-            <Link href="/booking">Book a Shoot</Link>
+            <Link href={chrome.bookHref}>{chrome.bookLabel}</Link>
           </Button>
-          <MobileMenu open={mobileOpen} onOpenChange={setMobileOpen}>
+          <MobileMenu
+            open={mobileOpen}
+            onOpenChange={setMobileOpen}
+            siteName={siteName}
+            links={[...nav.main, ...nav.mobile]}
+            bookLabel={chrome.bookLabel}
+            bookHref={chrome.bookHref}
+          >
             <Button variant="ghost" size="icon" aria-label="Open menu" className="lg:hidden">
               <Menu />
             </Button>
@@ -90,8 +106,8 @@ function Header() {
         </div>
       </div>
 
-      <MegaMenu open={openMenu === "Services"} />
-      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+      <MegaMenu open={openMenu === "mega"} menu={nav.mega} />
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} links={nav.search} copy={chrome.search} />
     </header>
   );
 }

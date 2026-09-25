@@ -1,9 +1,11 @@
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/shared/reveal";
 import { StatCounter } from "@/components/sections/home/stat-counter";
-import { stats } from "@/content/home";
+import { type HomeContent } from "@/lib/data/home";
 
-export function StatsBand() {
+export function StatsBand({ stats }: { stats: HomeContent["stats"] }) {
+  if (!stats.length) return null;
+
   return (
     <section className="border-y border-border/60 bg-charcoal py-20">
       <Container>

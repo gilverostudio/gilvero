@@ -3,16 +3,17 @@ import Link from "next/link";
 
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { Container } from "@/components/shared/container";
-import { footerNav } from "@/content/navigation";
-import { siteConfig } from "@/lib/site-config";
+import { getChromeCopy, getNavigation, getSettings } from "@/lib/data/site";
 
-const socialLinks = [
-  { label: "Instagram", href: siteConfig.social.instagram, Icon: Instagram },
-  { label: "YouTube", href: siteConfig.social.youtube, Icon: Youtube },
-  { label: "LinkedIn", href: siteConfig.social.linkedin, Icon: Linkedin },
-];
+async function Footer() {
+  const [siteConfig, nav, chrome] = await Promise.all([getSettings(), getNavigation(), getChromeCopy()]);
+  const footerNav = nav.footer;
+  const socialLinks = [
+    { label: "Instagram", href: siteConfig.social.instagram, Icon: Instagram },
+    { label: "YouTube", href: siteConfig.social.youtube, Icon: Youtube },
+    { label: "LinkedIn", href: siteConfig.social.linkedin, Icon: Linkedin },
+  ].filter((link) => link.href && link.href !== "#");
 
-function Footer() {
   return (
     <footer className="border-t border-border/60 bg-ink">
       <Container className="py-20">
@@ -20,15 +21,16 @@ function Footer() {
           <div>
             <p className="font-display text-2xl tracking-[0.4em]">{siteConfig.name}</p>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              A premium creative media house — photography, film, design, education and
-              archival print, under one roof.
+              {chrome.footer.blurb}
             </p>
-            <NewsletterForm />
+            <NewsletterForm {...chrome.newsletter} />
             <div className="mt-8 flex gap-3">
               {socialLinks.map(({ label, href, Icon }) => (
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noreferrer"
                   aria-label={label}
                   className="grid size-10 place-items-center rounded-full border border-border/70 text-foreground/70 transition-all hover:border-primary/60 hover:text-primary"
                 >
@@ -46,7 +48,7 @@ function Footer() {
                 </p>
                 <ul className="mt-5 space-y-3">
                   {column.links.map((link) => (
-                    <li key={link.label}>
+                    <li key={`${link.label}-${link.href}`}>
                       <Link
                         href={link.href}
                         className="text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -60,7 +62,7 @@ function Footer() {
             ))}
             <div>
               <p className="font-display text-xs tracking-[0.28em] text-primary uppercase">
-                Studio
+                {chrome.footer.contactTitle}
               </p>
               <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
                 <li>{siteConfig.address}</li>
@@ -84,10 +86,10 @@ function Footer() {
           <p>© {new Date().getFullYear()} {siteConfig.legalName}. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-foreground">
-              Privacy
+              {chrome.footer.privacyLabel}
             </Link>
             <Link href="/terms" className="hover:text-foreground">
-              Terms
+              {chrome.footer.termsLabel}
             </Link>
             <span className="tracking-[0.3em] text-primary/70">
               {siteConfig.tagline.toUpperCase()}

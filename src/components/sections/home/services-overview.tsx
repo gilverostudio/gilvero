@@ -6,10 +6,10 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
-import { homeImageDimensions, servicesOverview } from "@/content/home";
-import { images } from "@/lib/images";
+import { type HomeContent } from "@/lib/data/home";
+import { focalStyle } from "@/lib/images";
 
-export function ServicesOverview() {
+export function ServicesOverview({ services: servicesOverview }: { services: HomeContent["services"] }) {
   return (
     <Section>
       <SectionHeading
@@ -19,7 +19,7 @@ export function ServicesOverview() {
         action={
           <Button asChild variant="quiet" size="lg">
             <Link href="/services">
-              All Services <ArrowRight aria-hidden />
+              {servicesOverview.linkLabel} <ArrowRight aria-hidden />
             </Link>
           </Button>
         }
@@ -32,10 +32,12 @@ export function ServicesOverview() {
               className="group relative block overflow-hidden rounded-[2rem] border border-border/60"
             >
               <Image
-                src={images[card.image]}
-                alt={card.title}
-                width={homeImageDimensions[card.image].width}
-                height={homeImageDimensions[card.image].height}
+                src={card.image.src}
+                alt={card.image.alt}
+                width={card.image.width}
+                height={card.image.height}
+                sizes="(min-width: 768px) 50vw, 100vw"
+                style={focalStyle(card.image)}
                 loading="lazy"
                 className="aspect-[16/11] size-full object-cover opacity-70 transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:opacity-90"
               />

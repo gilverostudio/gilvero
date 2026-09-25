@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { bookingForm, budgets, cities, services } from "@/content/booking";
 import { cn } from "@/lib/utils";
-import { siteConfig } from "@/lib/site-config";
 
 const MONTHS = [
   "January",
@@ -78,7 +77,7 @@ function FieldSelect({ label, placeholder, options, value, onChange, className }
 }
 
 /** Booking request form — six fields plus the instant WhatsApp shortcut. */
-function BookingForm() {
+function BookingForm({ whatsapp }: { whatsapp: string }) {
   const [service, setService] = useState("");
   const [city, setCity] = useState("");
   const [budget, setBudget] = useState("");
@@ -194,7 +193,7 @@ function BookingForm() {
           {bookingForm.submitLabel}
         </Button>
         <Button asChild variant="quiet" size="lg">
-          <a href={siteConfig.whatsapp} target="_blank" rel="noreferrer">
+          <a href={whatsapp} target="_blank" rel="noreferrer">
             <MessageCircle />
             {bookingForm.whatsappLabel}
           </a>

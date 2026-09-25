@@ -11,14 +11,15 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { faqPreview, journalPreview } from "@/content/home";
+import { type HomeContent } from "@/lib/data/home";
 
-export function JournalFaq() {
+export function JournalFaq({ copy }: { copy: HomeContent["journalFaq"] }) {
   return (
     <Section className="border-t border-border/60 bg-charcoal">
       <div className="grid gap-16 lg:grid-cols-2">
         <div>
-          <p className="eyebrow">Journal</p>
-          <h2 className="mt-4 text-3xl sm:text-4xl">Latest writing</h2>
+          <p className="eyebrow">{copy.journalEyebrow}</p>
+          <h2 className="mt-4 text-3xl sm:text-4xl">{copy.journalTitle}</h2>
           <ul className="mt-9 space-y-2">
             {journalPreview.map((post, index) => (
               <Reveal key={post.slug} as="li" delay={index * 70}>
@@ -47,8 +48,8 @@ export function JournalFaq() {
           </ul>
         </div>
         <div>
-          <p className="eyebrow">Questions</p>
-          <h2 className="mt-4 text-3xl sm:text-4xl">Before you enquire</h2>
+          <p className="eyebrow">{copy.faqEyebrow}</p>
+          <h2 className="mt-4 text-3xl sm:text-4xl">{copy.faqTitle}</h2>
           <Accordion type="single" collapsible className="mt-9">
             {faqPreview.map((item) => (
               <AccordionItem key={item.question} value={item.question} className="border-border/50">
@@ -60,7 +61,7 @@ export function JournalFaq() {
             ))}
           </Accordion>
           <Button asChild variant="quiet" size="lg" className="mt-8">
-            <Link href="/faq">All FAQs</Link>
+            <Link href={copy.faqLink.href}>{copy.faqLink.label}</Link>
           </Button>
         </div>
       </div>

@@ -1,15 +1,16 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { megaMenu } from "@/content/navigation";
+import type { MegaMenuData } from "@/lib/data/site";
 import { cn } from "@/lib/utils";
 
 type MegaMenuProps = {
   open: boolean;
+  menu: MegaMenuData;
 };
 
 /** Desktop mega menu panel that slides open below the header. */
-function MegaMenu({ open }: MegaMenuProps) {
+function MegaMenu({ open, menu: megaMenu }: MegaMenuProps) {
   return (
     <div
       className={cn(
