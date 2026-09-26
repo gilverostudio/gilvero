@@ -3,6 +3,7 @@ import "server-only";
 import { cache } from "react";
 
 import { CMS_TAGS, cmsSelect, mediaUrl } from "@/lib/cms";
+import { getSections } from "@/lib/data/site";
 import { staticImage, type ImageKey, type SiteImage } from "@/lib/images";
 import { featuredWorkSection } from "@/content/home";
 import * as fallback from "@/content/portfolio";
@@ -153,6 +154,23 @@ export const getPortfolio = cache(async (): Promise<Portfolio> => {
     };
   }
   return { categories: categoryRows.map((c) => c.name), projects: projectRows.map(fromRow) };
+});
+
+export type CaseStudyLabels = { backLabel: string; galleryTitle: string; moreTitle: string; allLabel: string };
+
+const CASE_STUDY_LABELS: CaseStudyLabels = {
+  backLabel: "Portfolio",
+  galleryTitle: "Gallery",
+  moreTitle: "More work",
+  allLabel: "All projects",
+};
+
+/** Headings and link labels shared by every case study page. */
+export const getCaseStudyLabels = cache(async (): Promise<CaseStudyLabels> => {
+  const saved = ((await getSections())?.["portfolio.detail"] ?? {}) as Partial<CaseStudyLabels>;
+  return Object.fromEntries(
+    Object.entries(CASE_STUDY_LABELS).map(([k, v]) => [k, saved[k as keyof CaseStudyLabels] || v]),
+  ) as CaseStudyLabels;
 });
 
 export async function getProject(slug: string) {

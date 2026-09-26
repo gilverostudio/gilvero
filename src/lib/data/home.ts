@@ -17,7 +17,7 @@ export type HomeContent = {
     actions: { label: string; href: string; variant: "gold" | "hero" | "quiet" }[];
   };
   brands: string[];
-  services: { eyebrow: string; title: string; copy: string; linkLabel: string; cards: { title: string; copy: string; image: SiteImage }[] };
+  services: { eyebrow: string; title: string; copy: string; linkLabel: string; cardLinkLabel: string; cards: { title: string; copy: string; image: SiteImage }[] };
   featured: { eyebrow: string; title: string; copy: string; linkLabel: string };
   films: { eyebrow: string; title: string; items: { title: string; duration: string; videoUrl: string | null; image: SiteImage }[] };
   academy: {
@@ -69,6 +69,7 @@ function fromStatic(instagramHref: string): HomeContent {
     services: {
       ...home.servicesOverview,
       linkLabel: LABELS.services,
+      cardLinkLabel: "Explore",
       cards: home.servicesOverview.cards.map((c) => ({ title: c.title, copy: c.copy, image: staticImage(c.image, c.title) })),
     },
     featured: { ...home.featuredWorkSection, linkLabel: LABELS.featured },
@@ -178,6 +179,7 @@ export const getHomeContent = cache(async (): Promise<HomeContent> => {
       title: str(services.title),
       copy: str(services.copy),
       linkLabel: str(services.linkLabel) || LABELS.services,
+      cardLinkLabel: str(services.cardLinkLabel) || "Explore",
       cards: list(services.cards).map((c) => ({
         title: str(c.title),
         copy: str(c.copy),

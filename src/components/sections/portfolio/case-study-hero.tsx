@@ -3,10 +3,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
-import { type PortfolioProject } from "@/lib/data/portfolio";
+import { type CaseStudyLabels, type PortfolioProject } from "@/lib/data/portfolio";
 import { focalStyle } from "@/lib/images";
 
-function CaseStudyHero({ project }: { project: PortfolioProject }) {
+function CaseStudyHero({ project, labels }: { project: PortfolioProject; labels: CaseStudyLabels }) {
   return (
     <header className="relative min-h-[70svh] overflow-hidden pt-[72px]">
       <Image
@@ -24,7 +24,7 @@ function CaseStudyHero({ project }: { project: PortfolioProject }) {
           href="/portfolio"
           className="mb-8 inline-flex items-center gap-2 text-xs tracking-[0.2em] text-primary uppercase"
         >
-          <ArrowLeft className="size-3.5" /> Portfolio
+          <ArrowLeft className="size-3.5" /> {labels.backLabel}
         </Link>
         <p className="eyebrow">{project.category}</p>
         <h1 className="mt-5 max-w-4xl text-4xl leading-[1.03] sm:text-6xl lg:text-7xl">

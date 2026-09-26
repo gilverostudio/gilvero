@@ -48,7 +48,7 @@ export function ServicesOverview({ services: servicesOverview }: { services: Hom
                   {card.copy}
                 </p>
                 <span className="mt-5 inline-flex items-center gap-2 text-xs tracking-[0.2em] text-primary uppercase">
-                  Explore <ArrowRight aria-hidden className="size-3.5" />
+                  {servicesOverview.cardLinkLabel} <ArrowRight aria-hidden className="size-3.5" />
                 </span>
               </div>
             </Link>

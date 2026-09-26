@@ -52,6 +52,8 @@ refreshed on demand via `POST /api/revalidate` whenever something is saved in th
   Supabase variables aren't set (local work without the CMS, preview builds).
 - Website forms post to `src/app/actions/forms.ts`, which saves them to the admin Inbox.
   Email alerts are optional (see `.env.example`).
+- `/sitemap.xml` and `/robots.txt` are generated from the CMS, so new projects, courses and
+  articles are listed automatically.
 - **Design tokens** (colors, radius, easing, shadows): `src/app/globals.css` `:root` block
 
 See `.env.example` for the environment variables.

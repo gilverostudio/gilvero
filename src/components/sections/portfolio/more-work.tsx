@@ -3,20 +3,20 @@ import Link from "next/link";
 
 import { Section } from "@/components/shared/section";
 import { Button } from "@/components/ui/button";
-import { getPortfolio } from "@/lib/data/portfolio";
+import { getCaseStudyLabels, getPortfolio } from "@/lib/data/portfolio";
 import { focalStyle } from "@/lib/images";
 
 async function MoreWork({ currentSlug }: { currentSlug: string }) {
-  const { projects } = await getPortfolio();
+  const [{ projects }, labels] = await Promise.all([getPortfolio(), getCaseStudyLabels()]);
   const related = projects.filter((project) => project.slug !== currentSlug).slice(0, 3);
   if (!related.length) return null;
 
   return (
     <Section className="border-t border-border/60">
       <div className="mb-10 flex items-end justify-between gap-6">
-        <h2 className="text-3xl sm:text-4xl">More work</h2>
+        <h2 className="text-3xl sm:text-4xl">{labels.moreTitle}</h2>
         <Button asChild variant="quiet">
-          <Link href="/portfolio">All projects</Link>
+          <Link href="/portfolio">{labels.allLabel}</Link>
         </Button>
       </div>
       <div className="grid gap-5 sm:grid-cols-3">

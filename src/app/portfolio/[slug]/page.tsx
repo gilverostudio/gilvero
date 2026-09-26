@@ -9,7 +9,7 @@ import { MoreWork } from "@/components/sections/portfolio/more-work";
 import { CtaBand } from "@/components/shared/cta-band";
 import { pageDefaults } from "@/content/pages";
 import { fillTemplate, getPage } from "@/lib/data/page-meta";
-import { getPortfolio, getProject } from "@/lib/data/portfolio";
+import { getCaseStudyLabels, getPortfolio, getProject } from "@/lib/data/portfolio";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -34,14 +34,18 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const [project, page] = await Promise.all([getProject(slug), getPage("portfolio-detail", pageDefaults["portfolio-detail"])]);
+  const [project, page, labels] = await Promise.all([
+    getProject(slug),
+    getPage("portfolio-detail", pageDefaults["portfolio-detail"]),
+    getCaseStudyLabels(),
+  ]);
   if (!project) notFound();
 
   return (
     <>
-      <CaseStudyHero project={project} />
+      <CaseStudyHero project={project} labels={labels} />
       <CaseStudyOverview project={project} />
-      <CaseStudyGallery project={project} />
+      <CaseStudyGallery project={project} labels={labels} />
       <CaseStudyTestimonial project={project} />
       <MoreWork currentSlug={project.slug} />
       {page.cta ? <CtaBand {...page.cta} /> : null}
