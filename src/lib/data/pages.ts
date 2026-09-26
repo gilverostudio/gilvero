@@ -164,7 +164,15 @@ export type AcademyContent = {
     certificationCopy: string;
     studentProjects: string;
     studentProjectsCopy: string;
+    apply: { eyebrow: string; title: string; toast: string; backLabel: string };
   };
+};
+
+const APPLY_DEFAULTS = {
+  eyebrow: "Apply",
+  title: "Reserve a seat",
+  toast: "Application received. Our academy team will call you shortly.",
+  backLabel: "Back to Courses",
 };
 
 export const getAcademy = cache(async (): Promise<AcademyContent> => {
@@ -200,6 +208,7 @@ export const getAcademy = cache(async (): Promise<AcademyContent> => {
         certificationCopy: academyStatic.certificationCopy,
         studentProjects: "Student projects",
         studentProjectsCopy: academyStatic.studentProjectsCopy,
+        apply: APPLY_DEFAULTS,
       },
     };
   }
@@ -220,6 +229,12 @@ export const getAcademy = cache(async (): Promise<AcademyContent> => {
       certificationCopy: str(detail.certificationCopy),
       studentProjects: str(detail.studentProjects, "Student projects"),
       studentProjectsCopy: str(detail.studentProjectsCopy),
+      apply: {
+        eyebrow: str(detail.applyEyebrow, APPLY_DEFAULTS.eyebrow),
+        title: str(detail.applyTitle, APPLY_DEFAULTS.title),
+        toast: str(detail.applyToast, APPLY_DEFAULTS.toast),
+        backLabel: str(detail.backLabel, APPLY_DEFAULTS.backLabel),
+      },
     },
   };
 });
