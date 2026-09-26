@@ -56,27 +56,13 @@ refreshed on demand via `POST /api/revalidate` whenever something is saved in th
 
 See `.env.example` for the environment variables.
 
-### Commits and Netlify's contributor limit
+### Deploys and Netlify's contributor limit
 
-Netlify's free plan only lets **one Git contributor**, the account owner `gilverostudio`, trigger
-deploys from a **private** repo. Commits by anyone else are blocked. So commits are authored as
-`gilverostudio <gilverostudio@gmail.com>`, and a local `commit-msg` hook credits the developer:
-
-```
-Co-authored-by: sheryar-ahmed <royalsheryar505@gmail.com>
-```
-
-Setup on a fresh clone:
-
-```bash
-git config user.name "gilverostudio"
-git config user.email "gilverostudio@gmail.com"
-printf '#!/bin/sh
-T="Co-authored-by: sheryar-ahmed <royalsheryar505@gmail.com>"
-grep -qiF "$T" "$1" || git interpret-trailers --in-place --trailer "$T" "$1"
-' > .git/hooks/commit-msg
-chmod +x .git/hooks/commit-msg
-```
+On Netlify's free plan, a **private** repo only deploys when the GitHub account that **pushed** the
+commit is the Netlify owner (`gilverostudio`). Pushes from any other account fail with
+"unrecognized Git contributor". The current workflow: make the repo **public** while pushing and
+deploying, then switch it back to private. Longer-term options are linking the pushing GitHub
+account in Netlify (**Link Git account**) or upgrading to Pro.
 
 ## Conventions
 
