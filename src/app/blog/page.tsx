@@ -1,29 +1,25 @@
-import type { Metadata } from "next";
+import { type Metadata } from "next";
 
 import { PostGrid } from "@/components/sections/blog/post-grid";
-import { CtaBand } from "@/components/shared/cta-band";
-import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
+import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 import { getJournal } from "@/lib/data/pages";
 
-export const metadata: Metadata = {
-  title: "Journal — Photography, Editing & Creative Business | Gilvero",
-  description:
-    "Photography tips, camera reviews, editing technique, pricing and creative business writing from the Gilvero studio.",
-};
+const getThisPage = () => getPage("blog", pageDefaults["blog"]);
+
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
 
 export default async function BlogPage() {
-  const { categories, posts } = await getJournal();
+  const [page, { categories, posts }] = await Promise.all([getThisPage(), getJournal()]);
 
   return (
     <>
-      <PageHeader
-        eyebrow="Journal"
-        title="Notes from inside the studio."
-        copy="Technique, gear, pricing and the occasional set diary — written by the people doing the work."
-        image="studio"
-        crumbs={[{ label: "Journal" }]}
-      />
+      <CmsPageHeader page={page} />
       <Section>
         <PostGrid
           categories={categories}
@@ -38,12 +34,7 @@ export default async function BlogPage() {
           }))}
         />
       </Section>
-      <CtaBand
-        title="Want this in your inbox?"
-        copy="One considered email a month — technique, gear and studio notes."
-        primary={{ label: "Contact the Studio", href: "/contact" }}
-        secondary={{ label: "Visit the Academy", href: "/academy" }}
-      />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

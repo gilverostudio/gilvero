@@ -1,8 +1,11 @@
 import { Section } from "@/components/shared/section";
-import { mapSection } from "@/content/contact";
+import { getContactCopy } from "@/lib/data/forms-copy";
 
 /** Embedded map to the studio. */
-function MapSection() {
+async function MapSection() {
+  const { map: mapSection } = await getContactCopy();
+  if (!mapSection.src) return null;
+
   return (
     <Section>
       <h2 className="mb-8 text-3xl sm:text-4xl">{mapSection.title}</h2>

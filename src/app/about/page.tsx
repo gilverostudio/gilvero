@@ -7,26 +7,23 @@ import { StudioTourSection } from "@/components/sections/about/studio-tour-secti
 import { TeamSection } from "@/components/sections/about/team-section";
 import { TimelineSection } from "@/components/sections/about/timeline-section";
 import { ValuesSection } from "@/components/sections/about/values-section";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
 import { CtaBand } from "@/components/shared/cta-band";
-import { PageHeader } from "@/components/shared/page-header";
-import { aboutHeader } from "@/content/about";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "About Gilvero — Creative Media House in Lahore",
-  description:
-    "The story, team, studio and equipment behind Gilvero — a premium creative media company built on craft, restraint and repeat clients.",
-};
+const getThisPage = () => getPage("about", pageDefaults["about"]);
 
-export default function AboutPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function AboutPage() {
+  const page = await getThisPage();
+
   return (
     <>
-      <PageHeader
-        eyebrow={aboutHeader.eyebrow}
-        title={aboutHeader.title}
-        copy={aboutHeader.copy}
-        image="studio"
-        crumbs={[{ label: aboutHeader.crumbLabel }]}
-      />
+      <CmsPageHeader page={page} />
       <StorySection />
       <ValuesSection />
       <FounderSection />
@@ -34,7 +31,7 @@ export default function AboutPage() {
       <StudioTourSection />
       <TimelineSection />
       <ClientsSection />
-      <CtaBand title="Work with the studio." />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

@@ -3,7 +3,8 @@ import { Download, FileText, Images, Lock, type LucideIcon } from "lucide-react"
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SignInForm } from "@/components/sections/client-area/sign-in-form";
-import { clientFeatures, type ClientFeatureIcon } from "@/content/client-area";
+import { type ClientFeatureIcon } from "@/content/client-area";
+import { getClientAreaCopy } from "@/lib/data/forms-copy";
 
 const featureIcons: Record<ClientFeatureIcon, LucideIcon> = {
   images: Images,
@@ -13,18 +14,20 @@ const featureIcons: Record<ClientFeatureIcon, LucideIcon> = {
 };
 
 /** Sign-in form beside the client-area feature list. */
-function ClientAreaSection() {
+async function ClientAreaSection() {
+  const { signIn, features: clientFeatures } = await getClientAreaCopy();
+
   return (
     <Section>
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr]">
         <Reveal>
-          <SignInForm />
+          <SignInForm copy={signIn} />
         </Reveal>
         <div className="space-y-4">
           {clientFeatures.map((feature, index) => {
-            const Icon = featureIcons[feature.icon];
+            const Icon = featureIcons[feature.icon] ?? Lock;
             return (
-              <Reveal key={feature.title} delay={index * 70}>
+              <Reveal key={`${feature.title}-${index}`} delay={index * 70}>
                 <div className="glass flex items-start gap-4 rounded-2xl p-6">
                   <Icon className="mt-0.5 size-5 shrink-0 text-primary" />
                   <div>

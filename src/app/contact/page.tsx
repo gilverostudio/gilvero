@@ -3,28 +3,27 @@ import { type Metadata } from "next";
 import { ContactSection } from "@/components/sections/contact/contact-section";
 import { MapSection } from "@/components/sections/contact/map-section";
 import { StudioGallerySection } from "@/components/sections/contact/studio-gallery-section";
-import { PageHeader } from "@/components/shared/page-header";
-import { contactHeader } from "@/content/contact";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
+import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "Contact Gilvero — Studio in Lahore | Enquiries & Quotes",
-  description:
-    "Call, WhatsApp, email or visit the Gilvero Creative House in Lahore. Written quotes within one working day.",
-};
+const getThisPage = () => getPage("contact", pageDefaults["contact"]);
 
-export default function ContactPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function ContactPage() {
+  const page = await getThisPage();
+
   return (
     <>
-      <PageHeader
-        eyebrow={contactHeader.eyebrow}
-        title={contactHeader.title}
-        copy={contactHeader.copy}
-        image="studio"
-        crumbs={[{ label: contactHeader.crumbLabel }]}
-      />
+      <CmsPageHeader page={page} />
       <ContactSection />
       <StudioGallerySection />
       <MapSection />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

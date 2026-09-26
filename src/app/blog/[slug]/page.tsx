@@ -2,15 +2,19 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PostBody } from "@/components/sections/blog/post-body";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
 import { CtaBand } from "@/components/shared/cta-band";
-import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
+import { pageDefaults } from "@/content/pages";
+import { fillTemplate, getPage } from "@/lib/data/page-meta";
 import { getJournal, getPost } from "@/lib/data/pages";
 import { getSections } from "@/lib/data/site";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+const getTemplate = () => getPage("blog-detail", pageDefaults["blog-detail"]);
 
 export async function generateStaticParams() {
   const { posts } = await getJournal();
@@ -19,29 +23,31 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const [post, page] = await Promise.all([getPost(slug), getTemplate()]);
   if (!post) return {};
+  const vars = { title: post.title, excerpt: post.excerpt, category: post.category };
   return {
-    title: post.seoTitle || `${post.title} — Gilvero Journal`,
-    description: post.seoDescription || post.excerpt,
+    title: post.seoTitle || fillTemplate(page.seoTitle, vars),
+    description: post.seoDescription || fillTemplate(page.seoDescription, vars),
     openGraph: { images: [{ url: post.cover.src, width: post.cover.width, height: post.cover.height }] },
   };
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const [post, sections] = await Promise.all([getPost(slug), getSections()]);
+  const [post, page, sections] = await Promise.all([getPost(slug), getTemplate(), getSections()]);
   if (!post) notFound();
   const detail = (sections?.["blog.detail"] ?? {}) as { allLabel?: string; academyLabel?: string };
 
   return (
     <>
-      <PageHeader
+      <CmsPageHeader
+        page={{ ...page, header: { ...page.header, image: post.cover } }}
+        parents={[{ label: page.header.crumb || "Journal", href: "/blog" }]}
         eyebrow={`${post.category} · ${post.date} · ${post.read}`}
         title={post.title}
         copy={post.excerpt}
-        image={post.cover}
-        crumbs={[{ label: "Journal", href: "/blog" }, { label: post.title }]}
+        actions={null}
       />
       <Section>
         <PostBody
@@ -52,7 +58,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           }}
         />
       </Section>
-      <CtaBand />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

@@ -1,26 +1,25 @@
 import { type Metadata } from "next";
 
 import { ClientAreaSection } from "@/components/sections/client-area/client-area-section";
-import { PageHeader } from "@/components/shared/page-header";
-import { clientAreaHeader } from "@/content/client-area";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
+import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "Client Area — Private Galleries & Downloads | Gilvero",
-  description:
-    "Sign in to view private galleries, approve selects, download final files and track print orders.",
-};
+const getThisPage = () => getPage("client-area", pageDefaults["client-area"]);
 
-export default function ClientAreaPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function ClientAreaPage() {
+  const page = await getThisPage();
+
   return (
     <>
-      <PageHeader
-        eyebrow={clientAreaHeader.eyebrow}
-        title={clientAreaHeader.title}
-        copy={clientAreaHeader.copy}
-        image="studio"
-        crumbs={[{ label: clientAreaHeader.crumbLabel }]}
-      />
+      <CmsPageHeader page={page} />
       <ClientAreaSection />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

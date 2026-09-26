@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { bookingForm, budgets, cities, services } from "@/content/booking";
+import { type BookingCopy } from "@/lib/data/forms-copy";
 import { REFERENCE_LIMITS, uploadReferences, uploadsEnabled } from "@/lib/uploads";
 import { cn } from "@/lib/utils";
 
@@ -81,7 +81,8 @@ function FieldSelect({ label, placeholder, options, value, onChange, className }
 }
 
 /** Booking request form — saved to the studio inbox, with optional reference files. */
-function BookingForm({ whatsapp }: { whatsapp: string }) {
+function BookingForm({ whatsapp, copy }: { whatsapp: string; copy: BookingCopy }) {
+  const { form: bookingForm, services, cities, budgets } = copy;
   const [service, setService] = useState("");
   const [city, setCity] = useState("");
   const [budget, setBudget] = useState("");
@@ -220,7 +221,7 @@ function BookingForm({ whatsapp }: { whatsapp: string }) {
           <Input id="b-phone" name="phone" type="tel" autoComplete="tel" required maxLength={60} className="h-9 rounded-xl border-input bg-background/50" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="b-name">Name</Label>
+          <Label htmlFor="b-name">{bookingForm.name.label}</Label>
           <Input id="b-name" name="name" autoComplete="name" required maxLength={200} className="h-9 rounded-xl border-input bg-background/50" />
         </div>
         <div className="space-y-2">

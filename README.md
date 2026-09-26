@@ -44,10 +44,17 @@ src/
 
 ## Editing content
 
-- **Company details** (phone, email, WhatsApp, address, hours): `src/lib/site-config.ts`
-- **Images**: drop files in `public/images/` and update `src/lib/images.ts`
-- **Page copy, courses, projects, posts, products**: the matching file in `src/content/`
+All content is managed in the **Gilvero admin** ([gilverostudio/gilvero-admin](https://github.com/gilverostudio/gilvero-admin)),
+which stores it in Supabase. The site reads it through `src/lib/data/*` (cached with `fetch`, and
+refreshed on demand via `POST /api/revalidate` whenever something is saved in the admin).
+
+- `src/content/*` and `src/lib/site-config.ts` are the **built-in fallback**, used when the
+  Supabase variables aren't set (local work without the CMS, preview builds).
+- Website forms post to `src/app/actions/forms.ts`, which saves them to the admin Inbox.
+  Email alerts are optional (see `.env.example`).
 - **Design tokens** (colors, radius, easing, shadows): `src/app/globals.css` `:root` block
+
+See `.env.example` for the environment variables.
 
 ## Conventions
 
@@ -55,5 +62,5 @@ src/
   (forms, filters, counters, lightboxes) with business logic in `src/hooks/`.
 - Component variants via `cva` (see `components/ui/button.tsx`).
 - Every page exports `metadata`; dynamic routes use `generateMetadata` + `generateStaticParams`.
-- Forms currently confirm via toast — wire them to an API route or server action in
-  `src/app/api/` when a backend is ready.
+- Forms submit through the server action in `src/app/actions/forms.ts` (validation, honeypot,
+  database-side rate limiting).

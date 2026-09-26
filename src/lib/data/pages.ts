@@ -164,7 +164,13 @@ export type AcademyContent = {
     certificationCopy: string;
     studentProjects: string;
     studentProjectsCopy: string;
-    apply: { eyebrow: string; title: string; toast: string; backLabel: string };
+    apply: {
+      eyebrow: string;
+      title: string;
+      toast: string;
+      backLabel: string;
+      fields: { name: string; phone: string; email: string; message: string; submit: string };
+    };
   };
 };
 
@@ -173,6 +179,7 @@ const APPLY_DEFAULTS = {
   title: "Reserve a seat",
   toast: "Application received. Our academy team will call you shortly.",
   backLabel: "Back to Courses",
+  fields: { name: "Full name", phone: "Phone", email: "Email", message: "Anything we should know?", submit: "Submit Application" },
 };
 
 export const getAcademy = cache(async (): Promise<AcademyContent> => {
@@ -234,6 +241,9 @@ export const getAcademy = cache(async (): Promise<AcademyContent> => {
         title: str(detail.applyTitle, APPLY_DEFAULTS.title),
         toast: str(detail.applyToast, APPLY_DEFAULTS.toast),
         backLabel: str(detail.backLabel, APPLY_DEFAULTS.backLabel),
+        fields: Object.fromEntries(
+          Object.entries(APPLY_DEFAULTS.fields).map(([k, v]) => [k, str((detail.applyFields as Json | undefined)?.[k], v)]),
+        ) as typeof APPLY_DEFAULTS.fields,
       },
     },
   };

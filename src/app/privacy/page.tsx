@@ -1,25 +1,26 @@
 import { type Metadata } from "next";
 
-import { PageHeader } from "@/components/shared/page-header";
 import { LegalBody } from "@/components/sections/legal/legal-body";
-import { privacyPolicy } from "@/content/legal";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
+import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
+import { getLegal } from "@/lib/data/forms-copy";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Gilvero",
-  description:
-    "How Gilvero Creative Media collects, uses and protects your information — bookings, client galleries, Academy enrolment, print orders and your rights over your data.",
-};
+const getThisPage = () => getPage("privacy", pageDefaults["privacy"]);
 
-export default function PrivacyPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function PrivacyPage() {
+  const page = await getThisPage();
+
   return (
     <>
-      <PageHeader
-        eyebrow={privacyPolicy.eyebrow}
-        title={privacyPolicy.title}
-        image="studio"
-        crumbs={[{ label: privacyPolicy.crumb }]}
-      />
-      <LegalBody doc={privacyPolicy} />
+      <CmsPageHeader page={page} />
+      <LegalBody doc={await getLegal("privacy")} />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

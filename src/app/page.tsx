@@ -14,16 +14,15 @@ import { StorePreview } from "@/components/sections/home/store-preview";
 import { Testimonials } from "@/components/sections/home/testimonials";
 import { CtaBand } from "@/components/shared/cta-band";
 import { getHomeContent } from "@/lib/data/home";
-import { getPageCta } from "@/lib/data/site";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "GILVERO — Capture. Create. Inspire. | Photography, Film & Design",
-  description:
-    "Gilvero is a luxury creative media company: cinematic photography, film production, brand design, a professional academy and archival fine-art printing.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getPage("home", pageDefaults.home));
+}
 
 export default async function HomePage() {
-  const [content, cta] = await Promise.all([getHomeContent(), getPageCta("home")]);
+  const [content, page] = await Promise.all([getHomeContent(), getPage("home", pageDefaults.home)]);
 
   return (
     <>
@@ -39,7 +38,7 @@ export default async function HomePage() {
       <Recognition recognition={content.recognition} />
       <InstagramFeed instagram={content.instagram} />
       <JournalFaq copy={content.journalFaq} />
-      {cta === null ? null : <CtaBand {...(cta ?? {})} />}
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

@@ -15,7 +15,13 @@ const labelClassName =
   "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
 const inputClassName = "h-9 rounded-xl border-input bg-background/50";
 
-export type ApplyCopy = { eyebrow: string; title: string; toast: string; backLabel: string };
+export type ApplyCopy = {
+  eyebrow: string;
+  title: string;
+  toast: string;
+  backLabel: string;
+  fields: { name: string; phone: string; email: string; message: string; submit: string };
+};
 
 /** Course application — saved to the studio inbox with the course it was sent from. */
 function ApplyForm({ course, copy }: { course: string; copy: ApplyCopy }) {
@@ -53,31 +59,31 @@ function ApplyForm({ course, copy }: { course: string; copy: ApplyCopy }) {
       </div>
       <div className="space-y-2">
         <label htmlFor="name" className={labelClassName}>
-          Full name
+          {copy.fields.name}
         </label>
         <Input id="name" name="name" autoComplete="name" required maxLength={200} className={inputClassName} />
       </div>
       <div className="space-y-2">
         <label htmlFor="phone" className={labelClassName}>
-          Phone
+          {copy.fields.phone}
         </label>
         <Input id="phone" name="phone" type="tel" autoComplete="tel" required maxLength={60} className={inputClassName} />
       </div>
       <div className="space-y-2">
         <label htmlFor="email" className={labelClassName}>
-          Email
+          {copy.fields.email}
         </label>
         <Input id="email" name="email" type="email" autoComplete="email" required maxLength={200} className={inputClassName} />
       </div>
       <div className="space-y-2">
         <label htmlFor="msg" className={labelClassName}>
-          Anything we should know?
+          {copy.fields.message}
         </label>
         <Textarea id="msg" name="message" rows={3} maxLength={3000} className="rounded-xl bg-background/50" />
       </div>
       <Button type="submit" variant="gold" size="lg" className="w-full" disabled={pending}>
         {pending ? <LoaderCircle className="animate-spin" /> : null}
-        Submit Application
+        {copy.fields.submit}
       </Button>
       <Button asChild variant="quiet" size="lg" className="w-full">
         <Link href="/academy">{copy.backLabel}</Link>

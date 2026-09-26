@@ -16,17 +16,17 @@ function LegalBody({ doc }: LegalBodyProps) {
         </Reveal>
         <div className="mt-14 space-y-12">
           {doc.sections.map((section, index) => (
-            <Reveal key={section.heading} delay={Math.min(index, 4) * 70}>
+            <Reveal key={`${section.heading}-${index}`} delay={Math.min(index, 4) * 70}>
               <h2 className="font-display text-xl sm:text-2xl">{section.heading}</h2>
-              {section.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {section.paragraphs.map((paragraph, i) => (
+                <p key={i} className="mt-4 text-sm leading-relaxed text-muted-foreground">
                   {paragraph}
                 </p>
               ))}
               {section.bullets ? (
                 <ul className="mt-4 space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground [list-style-type:disc] marker:text-primary/60">
-                  {section.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
+                  {section.bullets.map((bullet, i) => (
+                    <li key={i}>{bullet}</li>
                   ))}
                 </ul>
               ) : null}

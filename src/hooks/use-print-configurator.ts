@@ -2,25 +2,16 @@
 
 import { useState } from "react";
 
-import {
-  defaultPrintSize,
-  frameTypes,
-  paperTypes,
-  type PaperType,
-  type PrintSize,
-} from "@/content/store";
-
 /**
- * State for the print configurator: selected size, paper and frame,
- * mirroring the original page (size defaults to 8×10, paper to the first
- * stock, frame to Wood). The summary line is derived from the selections.
+ * State for the print configurator: selected size, paper and frame. Starts on
+ * the default size (set in the admin), the first paper and the first frame.
  */
-export function usePrintConfigurator() {
-  const [size, setSize] = useState<PrintSize>(defaultPrintSize);
-  const [paper, setPaper] = useState<PaperType>(paperTypes[0]);
-  const [frame, setFrame] = useState<string>(frameTypes[0].name);
+export function usePrintConfigurator(options: { defaultSize: string; papers: string[]; frames: { name: string }[] }) {
+  const [size, setSize] = useState(options.defaultSize);
+  const [paper, setPaper] = useState(options.papers[0] ?? "");
+  const [frame, setFrame] = useState(options.frames[0]?.name ?? "");
 
-  const summary = `${size} · ${paper} · ${frame} frame`;
+  const summary = [size, paper, frame ? `${frame} frame` : ""].filter(Boolean).join(" · ");
 
   return { size, setSize, paper, setPaper, frame, setFrame, summary };
 }

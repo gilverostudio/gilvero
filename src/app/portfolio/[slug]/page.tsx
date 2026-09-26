@@ -7,6 +7,8 @@ import { CaseStudyOverview } from "@/components/sections/portfolio/case-study-ov
 import { CaseStudyTestimonial } from "@/components/sections/portfolio/case-study-testimonial";
 import { MoreWork } from "@/components/sections/portfolio/more-work";
 import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { fillTemplate, getPage } from "@/lib/data/page-meta";
 import { getPortfolio, getProject } from "@/lib/data/portfolio";
 
 type CaseStudyPageProps = {
@@ -20,18 +22,19 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const [project, page] = await Promise.all([getProject(slug), getPage("portfolio-detail", pageDefaults["portfolio-detail"])]);
   if (!project) return {};
+  const vars = { title: project.title, category: project.category, story: project.story, client: project.client };
   return {
-    title: project.seoTitle || `${project.title} — ${project.category} Case Study | Gilvero`,
-    description: project.seoDescription || project.story,
+    title: project.seoTitle || fillTemplate(page.seoTitle, vars),
+    description: project.seoDescription || fillTemplate(page.seoDescription, vars),
     openGraph: { images: [{ url: project.image.src, width: project.image.width, height: project.image.height }] },
   };
 }
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const [project, page] = await Promise.all([getProject(slug), getPage("portfolio-detail", pageDefaults["portfolio-detail"])]);
   if (!project) notFound();
 
   return (
@@ -41,7 +44,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       <CaseStudyGallery project={project} />
       <CaseStudyTestimonial project={project} />
       <MoreWork currentSlug={project.slug} />
-      <CtaBand />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

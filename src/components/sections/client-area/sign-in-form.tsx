@@ -7,10 +7,10 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signIn } from "@/content/client-area";
+import { type SignInContent } from "@/content/client-area";
 
 /** Gallery sign-in — informational toast until the delivery backend exists. */
-function SignInForm() {
+function SignInForm({ copy: signIn }: { copy: SignInContent }) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     toast.info(signIn.toastMessage);

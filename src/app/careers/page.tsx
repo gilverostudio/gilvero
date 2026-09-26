@@ -1,33 +1,25 @@
 import { type Metadata } from "next";
 
-import { CtaBand } from "@/components/shared/cta-band";
-import { PageHeader } from "@/components/shared/page-header";
 import { OpenRoles } from "@/components/sections/careers/open-roles";
-import { careersHeader } from "@/content/careers";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
+import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "Careers — Join the Gilvero Team",
-  description:
-    "Open roles at Gilvero Creative House in Lahore — photographers, cinematographers, retouchers, producers and Academy trainers. Send a portfolio and join the credits.",
-};
+const getThisPage = () => getPage("careers", pageDefaults["careers"]);
 
-export default function CareersPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function CareersPage() {
+  const page = await getThisPage();
+
   return (
     <>
-      <PageHeader
-        eyebrow={careersHeader.eyebrow}
-        title={careersHeader.title}
-        copy={careersHeader.copy}
-        image="studio"
-        crumbs={[{ label: "Careers" }]}
-      />
+      <CmsPageHeader page={page} />
       <OpenRoles />
-      <CtaBand
-        title="Don't see your role?"
-        copy="We keep a shortlist for every discipline. Send a portfolio, tell us what you'd own, and we will reach out when the seat opens."
-        primary={{ label: "Contact the Studio", href: "/contact" }}
-        secondary={{ label: "About Gilvero", href: "/about" }}
-      />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

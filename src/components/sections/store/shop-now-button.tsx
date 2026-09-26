@@ -3,12 +3,11 @@
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { storeHeader, storeToasts } from "@/content/store";
 
-function ShopNowButton() {
+function ShopNowButton({ label, toast: message }: { label: string; toast: string }) {
   return (
-    <Button variant="gold" size="lg" onClick={() => toast.info(storeToasts.shopNow)}>
-      {storeHeader.action}
+    <Button variant="gold" size="lg" onClick={() => toast.info(message)}>
+      {label}
     </Button>
   );
 }

@@ -4,36 +4,31 @@ import { ConfigurePrint } from "@/components/sections/store/configure-print";
 import { OrderTracking } from "@/components/sections/store/order-tracking";
 import { ShopNowButton } from "@/components/sections/store/shop-now-button";
 import { StoreProducts } from "@/components/sections/store/store-products";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
 import { CtaBand } from "@/components/shared/cta-band";
-import { PageHeader } from "@/components/shared/page-header";
-import { storeCta, storeHeader } from "@/content/store";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
+import { getStore } from "@/lib/data/store";
 
-export const metadata: Metadata = {
-  title: "Print Store — Fine Art Prints, Frames & Albums | Gilvero",
-  description:
-    "Archival photo prints, canvas, acrylic, luxury frames, albums and passport photos. Upload your image, choose size, paper and frame.",
-};
+const getThisPage = () => getPage("store", pageDefaults["store"]);
 
-export default function StorePage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function StorePage() {
+  const [page, store] = await Promise.all([getThisPage(), getStore()]);
+
   return (
     <>
-      <PageHeader
-        eyebrow={storeHeader.eyebrow}
-        title={storeHeader.title}
-        copy={storeHeader.copy}
-        image="store"
-        crumbs={[{ label: "Print Store" }]}
-        actions={<ShopNowButton />}
+      <CmsPageHeader
+        page={page}
+        actions={page.header.actionLabel ? <ShopNowButton label={page.header.actionLabel} toast={store.toasts.shopNow} /> : null}
       />
       <StoreProducts />
       <ConfigurePrint />
       <OrderTracking />
-      <CtaBand
-        title={storeCta.title}
-        copy={storeCta.copy}
-        primary={storeCta.primary}
-        secondary={storeCta.secondary}
-      />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

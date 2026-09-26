@@ -1,59 +1,40 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { type Metadata } from "next";
 
 import { AcademyHighlights } from "@/components/sections/academy/academy-highlights";
 import { CourseGrid } from "@/components/sections/academy/course-grid";
 import { StudentOutcomes } from "@/components/sections/academy/student-outcomes";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
 import { CtaBand } from "@/components/shared/cta-band";
-import { PageHeader } from "@/components/shared/page-header";
-import { Button } from "@/components/ui/button";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "Gilvero Academy — Photography, Film & Design Courses",
-  description:
-    "A professional creative institute: photography, cinematography, editing, design, drone and freelancing courses with certification and placement support.",
-};
+const getThisPage = () => getPage("academy", pageDefaults["academy"]);
 
-const educationalOrganizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  name: "Gilvero Academy",
-  description: "Professional creative education in photography, film and design.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
 
-export default function AcademyPage() {
+export default async function AcademyPage() {
+  const page = await getThisPage();
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(educationalOrganizationSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            name: "Gilvero Academy",
+            description: "Professional creative education in photography, film and design.",
+          }),
+        }}
       />
-      <PageHeader
-        eyebrow="Gilvero Academy"
-        title="Learn the craft inside a working studio."
-        copy="Small cohorts, real client briefs, industry trainers and a graded portfolio review at the end of every course."
-        image="academy"
-        crumbs={[{ label: "Academy" }]}
-        actions={
-          <>
-            <Button asChild variant="gold" size="lg">
-              <Link href="/academy">Enroll Now</Link>
-            </Button>
-            <Button asChild variant="quiet" size="lg">
-              <Link href="/contact">Talk to an Advisor</Link>
-            </Button>
-          </>
-        }
-      />
+      <CmsPageHeader page={page} />
       <AcademyHighlights />
       <CourseGrid />
       <StudentOutcomes />
-      <CtaBand
-        title="Applications for the next cohort are open."
-        copy="Send an application and our academy team will call you within one working day."
-        primary={{ label: "Enroll Now", href: "/academy/photography-mastery" }}
-        secondary={{ label: "Contact Academy", href: "/contact" }}
-      />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

@@ -1,26 +1,25 @@
 import { type Metadata } from "next";
 
 import { BookingSection } from "@/components/sections/booking/booking-section";
-import { PageHeader } from "@/components/shared/page-header";
-import { bookingHeader } from "@/content/booking";
+import { CmsPageHeader } from "@/components/shared/cms-page-header";
+import { CtaBand } from "@/components/shared/cta-band";
+import { pageDefaults } from "@/content/pages";
+import { getPage, pageMetadata } from "@/lib/data/page-meta";
 
-export const metadata: Metadata = {
-  title: "Book a Shoot — Gilvero Creative Media",
-  description:
-    "Book photography, film or design work with Gilvero. Choose service, date, city and budget — a producer replies within one working day.",
-};
+const getThisPage = () => getPage("booking", pageDefaults["booking"]);
 
-export default function BookingPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getThisPage());
+}
+
+export default async function BookingPage() {
+  const page = await getThisPage();
+
   return (
     <>
-      <PageHeader
-        eyebrow={bookingHeader.eyebrow}
-        title={bookingHeader.title}
-        copy={bookingHeader.copy}
-        image="wedding"
-        crumbs={[{ label: bookingHeader.crumbLabel }]}
-      />
+      <CmsPageHeader page={page} />
       <BookingSection />
+      {page.cta ? <CtaBand {...page.cta} /> : null}
     </>
   );
 }

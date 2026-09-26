@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { contactForm } from "@/content/contact";
+import { type ContactCopy } from "@/lib/data/forms-copy";
 
 /** Enquiry form — saved to the studio inbox. */
-function ContactForm({ whatsapp }: { whatsapp: string }) {
+function ContactForm({ whatsapp, copy: contactForm }: { whatsapp: string; copy: ContactCopy["form"] }) {
   const [pending, startTransition] = useTransition();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
