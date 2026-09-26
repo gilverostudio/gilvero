@@ -56,6 +56,28 @@ refreshed on demand via `POST /api/revalidate` whenever something is saved in th
 
 See `.env.example` for the environment variables.
 
+### Commits and Netlify's contributor limit
+
+Netlify's free plan only lets **one Git contributor**, the account owner `gilverostudio`, trigger
+deploys from a **private** repo. Commits by anyone else are blocked. So commits are authored as
+`gilverostudio <gilverostudio@gmail.com>`, and a local `commit-msg` hook credits the developer:
+
+```
+Co-authored-by: sheryar-ahmed <royalsheryar505@gmail.com>
+```
+
+Setup on a fresh clone:
+
+```bash
+git config user.name "gilverostudio"
+git config user.email "gilverostudio@gmail.com"
+printf '#!/bin/sh
+T="Co-authored-by: sheryar-ahmed <royalsheryar505@gmail.com>"
+grep -qiF "$T" "$1" || git interpret-trailers --in-place --trailer "$T" "$1"
+' > .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
 ## Conventions
 
 - Server components by default; `"use client"` only on the smallest interactive island
