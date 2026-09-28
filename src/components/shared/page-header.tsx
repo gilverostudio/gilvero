@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { type ReactNode } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -50,7 +50,7 @@ function ProjectGrid({ categories, projects }: ProjectGridProps) {
             <Reveal key={project.slug} delay={index * 70}>
               <Link
                 href={`/portfolio/${project.slug}`}
-                className="group block overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/40"
+                className="group block overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/40 transition-[translate,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]"
               >
                 <Image
                   src={project.image.src}

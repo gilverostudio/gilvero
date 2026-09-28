@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/shared/reveal";
@@ -30,7 +30,7 @@ export function ServicesOverview({ services: servicesOverview }: { services: Hom
             <Link
               href="/services"
               data-theme="dark"
-              className="group relative block overflow-hidden rounded-[2rem] border border-border/60"
+              className="group relative block overflow-hidden rounded-[2rem] border border-border/60 transition-[translate,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]"
             >
               <Image
                 src={card.image.src}

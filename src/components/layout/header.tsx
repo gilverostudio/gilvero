@@ -52,13 +52,19 @@ function Header({ siteName, nav, chrome }: HeaderProps) {
       data-theme={!scrolled && opensOnPhoto(pathname) ? "dark" : undefined}
       onMouseLeave={() => setOpenMenu(null)}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        scrolled
-          ? "border-b border-border/60 bg-background/80 backdrop-blur-xl"
-          : "border-b border-transparent bg-gradient-to-b from-background/70 to-transparent",
+        "fixed inset-x-0 top-0 z-50 transition-[padding,background-color] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        scrolled ? "px-3 pt-3" : "bg-gradient-to-b from-background/70 to-transparent",
       )}
     >
-      <div className="mx-auto flex h-[72px] w-full max-w-[1320px] items-center gap-4 px-5 sm:px-8">
+      {/* Full-width bar at the top of the page; a floating glass capsule once scrolled. */}
+      <div
+        className={cn(
+          "mx-auto flex w-full items-center gap-4 border transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          scrolled
+            ? "h-[60px] max-w-[1240px] rounded-full border-border/60 bg-background/70 px-4 shadow-[0_18px_50px_-24px_oklch(0%_0_0/0.45)] backdrop-blur-2xl backdrop-saturate-150 sm:px-6"
+            : "h-[72px] max-w-[1320px] border-transparent px-5 sm:px-8",
+        )}
+      >
         <Link href="/" className="group flex items-center gap-3">
           <span className="font-display text-lg tracking-[0.42em] text-foreground transition-colors group-hover:text-primary">
             {siteName}

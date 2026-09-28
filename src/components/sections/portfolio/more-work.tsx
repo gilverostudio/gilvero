@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 
 import { Section } from "@/components/shared/section";
@@ -24,7 +24,7 @@ async function MoreWork({ currentSlug }: { currentSlug: string }) {
           <Link
             key={project.slug}
             href={`/portfolio/${project.slug}`}
-            className="group overflow-hidden rounded-[1.5rem] border border-border/60"
+            className="group overflow-hidden rounded-[1.5rem] border border-border/60 transition-[translate,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]"
           >
             <Image
               src={project.image.src}

@@ -14,11 +14,11 @@ function MegaMenu({ open, menu: megaMenu }: MegaMenuProps) {
   return (
     <div
       className={cn(
-        "hidden overflow-hidden border-border/60 bg-background/95 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:block",
-        open ? "max-h-[420px] border-t opacity-100" : "pointer-events-none max-h-0 opacity-0",
+        "hidden overflow-hidden px-3 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:block",
+        open ? "max-h-[480px] opacity-100" : "pointer-events-none max-h-0 opacity-0",
       )}
     >
-      <div className="mx-auto grid w-full max-w-[1320px] gap-10 px-8 py-10 md:grid-cols-4">
+      <div className="mx-auto mt-2 mb-6 grid w-full max-w-[1240px] gap-10 rounded-[1.75rem] border border-border/60 bg-background/85 px-10 py-10 shadow-[0_24px_60px_-28px_oklch(0%_0_0/0.5)] backdrop-blur-2xl backdrop-saturate-150 md:grid-cols-4">
         <div>
           <p className="eyebrow">{megaMenu.intro.eyebrow}</p>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">

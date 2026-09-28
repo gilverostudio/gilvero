@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/shared/reveal";

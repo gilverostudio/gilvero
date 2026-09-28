@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";

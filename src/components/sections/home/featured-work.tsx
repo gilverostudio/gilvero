@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/shared/reveal";
@@ -33,7 +33,7 @@ export async function FeaturedWork({ section: featuredWorkSection }: { section: 
           <Reveal key={work.slug} delay={index * 70}>
             <Link
               href={`/portfolio/${work.slug}`}
-              className="group block overflow-hidden rounded-[1.75rem] border border-border/60 bg-background"
+              className="group block overflow-hidden rounded-[1.75rem] border border-border/60 bg-background transition-[translate,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]"
             >
               <div className="overflow-hidden">
                 <Image

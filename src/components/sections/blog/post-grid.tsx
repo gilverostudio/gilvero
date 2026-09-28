@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -41,7 +41,7 @@ function PostGrid({ categories, posts }: { categories: string[]; posts: PostCard
           <Reveal key={post.slug} delay={index * 70}>
             <Link
               href={`/blog/${post.slug}`}
-              className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/40"
+              className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/40 transition-[translate,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]"
             >
               <Image
                 src={post.cover.src}

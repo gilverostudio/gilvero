@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { FadeImage as Image } from "@/components/shared/fade-image";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ type ProductCardProps = {
 
 function ProductCard({ product, buttonLabel, toastMessage }: ProductCardProps) {
   return (
-    <div className="group overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/40">
+    <div className="group overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/40 transition-[translate,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-glow)]">
       <Image
         src={product.image.src}
         alt={product.image.alt || product.name}
