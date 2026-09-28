@@ -16,7 +16,7 @@ export function LatestFilms({ films }: { films: HomeContent["films"] }) {
       <div className="grid gap-5 lg:grid-cols-3">
         {films.items.map((film, index) => {
           const card = (
-            <div className="group relative overflow-hidden rounded-[1.75rem] border border-border/60">
+            <div data-theme="dark" className="group relative overflow-hidden rounded-[1.75rem] border border-border/60">
               <Image
                 src={film.image.src}
                 alt={film.image.alt}
@@ -25,7 +25,7 @@ export function LatestFilms({ films }: { films: HomeContent["films"] }) {
                 sizes="(min-width: 1024px) 33vw, 100vw"
                 loading="lazy"
                 style={focalStyle(film.image)}
-                className="aspect-video size-full object-cover opacity-75 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
+                className="aspect-video size-full object-cover opacity-75 light:opacity-95 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/95 to-transparent" />
               <div className="absolute inset-0 grid place-items-center">

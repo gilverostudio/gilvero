@@ -26,7 +26,7 @@ async function TeamSection() {
                 height={member.photo.height}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 style={focalStyle(member.photo)}
-                className="aspect-[4/3] w-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-90"
+                className="aspect-[4/3] w-full object-cover opacity-60 light:opacity-95 transition-opacity duration-700 group-hover:opacity-90"
               />
               <div className="p-6">
                 <h3 className="text-lg">{member.name}</h3>

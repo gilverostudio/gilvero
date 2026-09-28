@@ -30,7 +30,7 @@ export default async function NotFound() {
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Link
             href="/"
-            className="inline-flex h-12 items-center justify-center rounded-full bg-gradient-to-r from-[oklch(0.78_0.12_84)] to-[oklch(0.88_0.1_92)] px-8 text-sm font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-gradient-to-r from-[oklch(0.78_0.12_84)] to-[oklch(0.88_0.1_92)] px-8 text-sm font-medium text-on-gold transition-transform hover:-translate-y-0.5"
           >
             {copy.homeLabel}
           </Link>

@@ -8,7 +8,7 @@ import { focalStyle } from "@/lib/images";
 
 function CaseStudyHero({ project, labels }: { project: PortfolioProject; labels: CaseStudyLabels }) {
   return (
-    <header className="relative min-h-[70svh] overflow-hidden pt-[72px]">
+    <header data-theme="dark" className="relative min-h-[70svh] overflow-hidden pt-[72px]">
       <Image
         src={project.image.src}
         alt={project.image.alt}

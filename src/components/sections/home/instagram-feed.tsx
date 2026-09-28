@@ -34,7 +34,7 @@ export function InstagramFeed({ instagram: instagramSection }: { instagram: Home
                 sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw"
                 style={focalStyle(image)}
                 loading="lazy"
-                className="aspect-square size-full object-cover opacity-70 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
+                className="aspect-square size-full object-cover opacity-70 light:opacity-95 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
               />
             </a>
           </Reveal>

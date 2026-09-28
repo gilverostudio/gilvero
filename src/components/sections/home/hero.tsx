@@ -9,7 +9,7 @@ import { focalStyle } from "@/lib/images";
 
 export function Hero({ hero }: { hero: HomeContent["hero"] }) {
   return (
-    <section className="relative flex min-h-[100svh] items-end overflow-hidden">
+    <section data-theme="dark" className="relative flex min-h-[100svh] items-end overflow-hidden">
       <Image
         src={hero.image.src}
         alt={hero.image.alt}

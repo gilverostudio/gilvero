@@ -1,11 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* `light:` variant: styles that only apply in the light theme. */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 /* ------------------------------------------- */
 /* Design tokens — Gilvero dark luxury theme   */
 /* ------------------------------------------- */
 
-:root {
+/*
+ * Dark tokens: the default, and also "dark islands" — photo surfaces
+ * (hero, film and service cards, gallery tiles) marked data-theme="dark" so
+ * they stay cinematic inside the light theme.
+ */
+:root,
+[data-theme="dark"] {
   --radius: 1rem;
   /* Native controls (select menus, date pickers, scrollbars) follow the theme. */
   color-scheme: dark;
@@ -37,6 +46,53 @@
 
   --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-glow: 0 0 60px -20px oklch(82% 0.13 85 / 0.35);
+
+  --on-gold: oklch(14% 0.01 80);
+  --gold-text: linear-gradient(100deg, oklch(72% 0.1 84), oklch(92% 0.11 92), oklch(70% 0.1 80));
+}
+
+/* Islands re-apply the text colour so it doesn't inherit the light page's ink. */
+[data-theme="dark"] {
+  color: var(--foreground);
+}
+
+/* ------------------------------------------- */
+/* Light theme — warm gallery paper, antique   */
+/* gold. Set on <html data-theme="light"> by   */
+/* the pre-paint script in the root layout.    */
+/* ------------------------------------------- */
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --ink: oklch(95.5% 0.008 85);
+  --charcoal: oklch(96.2% 0.009 85);
+  --gold: oklch(56% 0.115 76);
+  --gold-soft: oklch(70% 0.1 84);
+
+  --background: oklch(98.4% 0.006 85);
+  --foreground: oklch(19% 0.008 285);
+  --card: oklch(99.6% 0.003 85);
+  --card-foreground: oklch(19% 0.008 285);
+  --popover: oklch(99.6% 0.003 85);
+  --popover-foreground: oklch(19% 0.008 285);
+  --primary: oklch(56% 0.115 76);
+  --primary-foreground: oklch(99% 0.004 85);
+  --secondary: oklch(94.6% 0.008 85);
+  --secondary-foreground: oklch(19% 0.008 285);
+  --muted: oklch(95% 0.007 85);
+  --muted-foreground: oklch(46% 0.012 285);
+  --accent: oklch(93.5% 0.03 86);
+  --accent-foreground: oklch(38% 0.08 76);
+  --destructive: oklch(55% 0.21 25);
+  --destructive-foreground: oklch(98% 0.003 250);
+  --border: oklch(89.5% 0.01 85);
+  --input: oklch(86.5% 0.012 85);
+  --ring: oklch(56% 0.115 76);
+
+  --shadow-glow: 0 18px 50px -24px oklch(56% 0.11 76 / 0.45);
+
+  --gold-text: linear-gradient(100deg, oklch(50% 0.1 74), oklch(66% 0.13 84), oklch(48% 0.095 72));
 }
 
 @theme inline {
@@ -64,6 +120,7 @@
   --color-charcoal: var(--charcoal);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
+  --color-on-gold: var(--on-gold);
 
   --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
@@ -128,6 +185,9 @@
 
   body {
     background: var(--background);
+    transition:
+      background-color 0.4s var(--ease-lux),
+      color 0.4s var(--ease-lux);
     color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -170,12 +230,7 @@
 /* Gold gradient headline text */
 @utility gold-text {
   color: transparent;
-  background: linear-gradient(
-    100deg,
-    oklch(72% 0.1 84),
-    oklch(92% 0.11 92),
-    oklch(70% 0.1 80)
-  );
+  background: var(--gold-text);
   -webkit-background-clip: text;
   background-clip: text;
 }

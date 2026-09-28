@@ -23,7 +23,7 @@ function ProductCard({ product, buttonLabel, toastMessage }: ProductCardProps) {
         height={product.image.height}
         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
         style={focalStyle(product.image)}
-        className="aspect-[16/10] w-full object-cover opacity-70 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
+        className="aspect-[16/10] w-full object-cover opacity-70 light:opacity-95 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
       />
       <div className="p-6">
         <h3 className="text-lg">{product.name}</h3>

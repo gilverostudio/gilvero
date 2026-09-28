@@ -44,7 +44,7 @@ export function Recognition({ recognition }: { recognition: HomeContent["recogni
                   sizes="(min-width: 1024px) 25vw, 50vw"
                   style={focalStyle(image)}
                   loading="lazy"
-                  className="aspect-square w-full rounded-2xl border border-border/60 object-cover opacity-80 transition-opacity hover:opacity-100"
+                  className="aspect-square w-full rounded-2xl border border-border/60 object-cover opacity-80 light:opacity-95 transition-opacity hover:opacity-100"
                 />
               </Reveal>
             ))}

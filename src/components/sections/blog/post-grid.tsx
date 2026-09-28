@@ -50,7 +50,7 @@ function PostGrid({ categories, posts }: { categories: string[]; posts: PostCard
                 height={post.cover.height}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 style={focalStyle(post.cover)}
-                className="aspect-[16/10] w-full object-cover opacity-70 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
+                className="aspect-[16/10] w-full object-cover opacity-70 light:opacity-95 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-95"
               />
               <div className="flex flex-1 flex-col p-7">
                 <p className="text-[0.7rem] tracking-[0.2em] text-primary uppercase">

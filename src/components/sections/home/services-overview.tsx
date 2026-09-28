@@ -29,6 +29,7 @@ export function ServicesOverview({ services: servicesOverview }: { services: Hom
           <Reveal key={card.title} delay={index * 90}>
             <Link
               href="/services"
+              data-theme="dark"
               className="group relative block overflow-hidden rounded-[2rem] border border-border/60"
             >
               <Image
@@ -39,7 +40,7 @@ export function ServicesOverview({ services: servicesOverview }: { services: Hom
                 sizes="(min-width: 768px) 50vw, 100vw"
                 style={focalStyle(card.image)}
                 loading="lazy"
-                className="aspect-[16/11] size-full object-cover opacity-70 transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:opacity-90"
+                className="aspect-[16/11] size-full object-cover opacity-70 light:opacity-95 transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:opacity-90"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-7 sm:p-9">

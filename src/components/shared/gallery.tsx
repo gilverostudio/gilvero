@@ -26,6 +26,7 @@ function Gallery({ items, className }: GalleryProps) {
           <button
             key={`${item.image.src}-${index}`}
             onClick={() => setActive(index)}
+            data-theme="dark"
             className={cn(
               "group relative cursor-pointer overflow-hidden rounded-3xl border border-border/60",
               index % 5 === 0 && "lg:col-span-2 lg:row-span-2",

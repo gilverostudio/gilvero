@@ -8,6 +8,7 @@ import { useState } from "react";
 import { MegaMenu } from "@/components/layout/mega-menu";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { SearchDialog } from "@/components/layout/search-dialog";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { type NavLink } from "@/content/navigation";
 import { useScrolled } from "@/hooks/use-scrolled";
@@ -19,6 +20,11 @@ type HeaderProps = {
   nav: Pick<Navigation, "main" | "mega" | "search" | "mobile">;
   chrome: Pick<ChromeCopy, "bookLabel" | "bookHref" | "search">;
 };
+
+/** Pages that open on a full-bleed photo (a dark island, see globals.css). */
+function opensOnPhoto(pathname: string) {
+  return pathname === "/" || /^\/portfolio\/[^/]+$/.test(pathname);
+}
 
 /** The nav item that expands the mega menu on hover: the one linking where the mega menu's CTA goes. */
 function opensMegaMenu(item: NavLink, nav: HeaderProps["nav"]) {
@@ -42,6 +48,8 @@ function Header({ siteName, nav, chrome }: HeaderProps) {
 
   return (
     <header
+      // Over a hero photo the transparent header stays dark in either theme.
+      data-theme={!scrolled && opensOnPhoto(pathname) ? "dark" : undefined}
       onMouseLeave={() => setOpenMenu(null)}
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -88,6 +96,7 @@ function Header({ siteName, nav, chrome }: HeaderProps) {
           >
             <Search />
           </Button>
+          <ThemeToggle />
           <Button asChild variant="gold" size="sm" className="hidden sm:inline-flex">
             <Link href={chrome.bookHref}>{chrome.bookLabel}</Link>
           </Button>

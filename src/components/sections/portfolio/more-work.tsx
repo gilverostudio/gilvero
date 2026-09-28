@@ -33,7 +33,7 @@ async function MoreWork({ currentSlug }: { currentSlug: string }) {
               height={project.image.height}
               sizes="(min-width: 640px) 33vw, 100vw"
               style={focalStyle(project.image)}
-              className="aspect-[4/3] w-full object-cover opacity-75 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-100"
+              className="aspect-[4/3] w-full object-cover opacity-75 light:opacity-95 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-100"
             />
             <div className="p-5">
               <p className="text-[0.7rem] tracking-[0.2em] text-primary uppercase">

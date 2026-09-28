@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Manrope, Sora } from "next/font/google";
-import { Toaster } from "sonner";
 
 import { FloatingActions } from "@/components/layout/floating-actions";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { ThemedToaster } from "@/components/theme/themed-toaster";
 import { getChromeCopy, getNavigation, getSettings } from "@/lib/data/site";
+import { THEME_SCRIPT } from "@/lib/theme";
 
 import "./globals.css";
 
@@ -60,7 +61,15 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   };
 
   return (
-    <html lang="en" className={`${sora.variable} ${manrope.variable} h-full antialiased`}>
+    // data-theme is set by THEME_SCRIPT before hydration, hence suppressHydrationWarning.
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${sora.variable} ${manrope.variable} h-full antialiased`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
@@ -70,7 +79,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <main className="min-h-screen">{children}</main>
         <Footer />
         <FloatingActions phone={settings.phone} whatsapp={settings.whatsapp} whatsappLabel={chrome.whatsappLabel} />
-        <Toaster theme="dark" position="bottom-center" />
+        <ThemedToaster />
       </body>
     </html>
   );
