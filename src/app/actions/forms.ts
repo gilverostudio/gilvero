@@ -3,7 +3,7 @@
 import { after } from "next/server";
 import { z } from "zod";
 
-import { cmsEnabled } from "@/lib/cms";
+import { cmsConfig } from "@/lib/cms";
 import { getSettings } from "@/lib/data/site";
 import { notifyStudio } from "@/lib/notify";
 
@@ -60,7 +60,8 @@ export async function submitForm<K extends FormKind>(kind: K, input: FormInput<K
 
   const parsed = schemas[kind].safeParse(input);
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Please check the form." };
-  if (!cmsEnabled) return { ok: false, error: UNAVAILABLE };
+  const cms = cmsConfig();
+  if (!cms) return { ok: false, error: UNAVAILABLE };
 
   const { name = "", email: address, phone: tel = "", ...data } = parsed.data as Record<string, unknown> & {
     name?: string;
@@ -68,11 +69,11 @@ export async function submitForm<K extends FormKind>(kind: K, input: FormInput<K
     phone?: string;
   };
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/submit_form`, {
+  const res = await fetch(`${cms.url}/rest/v1/rpc/submit_form`, {
     method: "POST",
     headers: {
-      apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+      apikey: cms.anonKey,
+      authorization: `Bearer ${cms.anonKey}`,
       "content-type": "application/json",
     },
     body: JSON.stringify({ p_kind: kind, p_name: name, p_email: address, p_phone: tel, p_data: data }),

@@ -10,7 +10,8 @@ export const REFERENCE_LIMITS = {
   types: ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif", "application/pdf"],
 };
 
-export const uploadsEnabled = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+/** Public Supabase details, passed down from the server (read at runtime there). */
+export type UploadTarget = { url: string; anonKey: string };
 
 function safeName(name: string) {
   const dot = name.lastIndexOf(".");
@@ -20,10 +21,8 @@ function safeName(name: string) {
 }
 
 /** Uploads files under one random folder; returns their storage paths. */
-export async function uploadReferences(files: File[]): Promise<string[]> {
+export async function uploadReferences(files: File[], { url, anonKey: key }: UploadTarget): Promise<string[]> {
   const folder = `bookings/${crypto.randomUUID()}`;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
   return Promise.all(
     files.map(async (file, i) => {

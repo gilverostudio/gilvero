@@ -7,6 +7,8 @@
 
 :root {
   --radius: 1rem;
+  /* Native controls (select menus, date pickers, scrollbars) follow the theme. */
+  color-scheme: dark;
 
   --ink: oklch(13% 0.004 285);
   --charcoal: oklch(19% 0.005 285);
@@ -134,6 +136,16 @@
   ::selection {
     background: var(--gold);
     color: var(--ink);
+  }
+
+  /* Open select menus: readable on the theme's popover surface. */
+  select option,
+  select optgroup {
+    background-color: var(--popover);
+    color: var(--popover-foreground);
+  }
+  select option:disabled {
+    color: var(--muted-foreground);
   }
 
   h1,

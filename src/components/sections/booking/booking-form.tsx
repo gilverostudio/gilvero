@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { type BookingCopy } from "@/lib/data/forms-copy";
-import { REFERENCE_LIMITS, uploadReferences, uploadsEnabled } from "@/lib/uploads";
+import { REFERENCE_LIMITS, uploadReferences, type UploadTarget } from "@/lib/uploads";
 import { cn } from "@/lib/utils";
 
 const MONTHS = [
@@ -63,7 +63,7 @@ function FieldSelect({ label, placeholder, options, value, onChange, className }
           value={value}
           onChange={(event) => onChange(event.target.value)}
           data-placeholder={value ? undefined : ""}
-          className="flex h-9 w-full cursor-pointer appearance-none items-center justify-between rounded-xl border border-input bg-background/50 px-3 py-2 text-sm whitespace-nowrap shadow-sm ring-offset-background focus:ring-1 focus:ring-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-muted-foreground"
+          className="flex h-9 w-full cursor-pointer appearance-none items-center justify-between rounded-xl border border-input bg-background/50 px-3 py-2 pr-9 text-sm whitespace-nowrap text-foreground shadow-sm ring-offset-background transition-colors hover:border-primary/40 focus:border-primary/60 focus:ring-1 focus:ring-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-muted-foreground"
         >
           <option value="" disabled>
             {placeholder}
@@ -81,7 +81,7 @@ function FieldSelect({ label, placeholder, options, value, onChange, className }
 }
 
 /** Booking request form — saved to the studio inbox, with optional reference files. */
-function BookingForm({ whatsapp, copy }: { whatsapp: string; copy: BookingCopy }) {
+function BookingForm({ whatsapp, copy, uploads }: { whatsapp: string; copy: BookingCopy; uploads: UploadTarget | null }) {
   const { form: bookingForm, services, cities, budgets } = copy;
   const [service, setService] = useState("");
   const [city, setCity] = useState("");
@@ -127,9 +127,9 @@ function BookingForm({ whatsapp, copy }: { whatsapp: string; copy: BookingCopy }
     const get = (key: string) => String(data.get(key) ?? "");
     startTransition(async () => {
       let attachments: string[] = [];
-      if (files.length && uploadsEnabled) {
+      if (files.length && uploads) {
         try {
-          attachments = await uploadReferences(files);
+          attachments = await uploadReferences(files, uploads);
         } catch (error) {
           toast.error(error instanceof Error ? error.message : "Couldn't upload your files.");
           return;
